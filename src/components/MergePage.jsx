@@ -10,6 +10,7 @@ const MergePage = () => {
     const newFile = event.target.files[0];
     if (newFile) {
       setPdfFiles((prevFiles) => [...prevFiles, newFile]);
+      event.target.value = null;
     }
   };
 
@@ -55,6 +56,41 @@ const MergePage = () => {
     setPreviewUrl(null);
   };
 
+  const handleMoveUpFile = (index) => {
+    if (index === 0) return;
+
+    setPdfFiles((prevFiles) => {
+      const newOrder = [...prevFiles];
+
+      const [file] = newOrder.splice(index, 1);
+      newOrder.splice(index - 1, 0, file);
+
+      return newOrder;
+    });
+  };
+
+  const handleMoveDownFile = (index) => {
+    if (index === pdfFiles.length - 1) return;
+
+    setPdfFiles((prevFiles) => {
+      const newFiles = [...prevFiles];
+
+      const [file] = newFiles.splice(index, 1);
+      newFiles.splice(index + 1, 0, file);
+
+      return newFiles;
+    });
+  };
+
+  const handleDeleteFile = (index) => {
+    setPdfFiles((prevFiles) => {
+      const newFiles = [...prevFiles];
+      newFiles.splice(index, 1);
+
+      return newFiles;
+    });
+  };
+
   return (
     <div>
       <input type="file" accept="application/pdf" onChange={handleFileChange} />
@@ -66,7 +102,17 @@ const MergePage = () => {
           <ol>
             {pdfFiles.map((file, index) => (
               <li key={index}>
-                <button onClick={() => handlePreview(file)}>{file.name}</button>
+                <button
+                  style={{ margin: '0 10px 0 0 ' }}
+                  onClick={() => handlePreview(file)}
+                >
+                  {file.name}
+                </button>
+                <button onClick={() => handleMoveUpFile(index)}>subir</button>
+                <button onClick={() => handleMoveDownFile(index)}>bajar</button>
+                <button onClick={() => handleDeleteFile(index)}>
+                  eliminar
+                </button>
               </li>
             ))}
           </ol>
