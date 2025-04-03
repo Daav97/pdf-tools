@@ -1,4 +1,4 @@
-# Pdf Tools (Frontend)
+# Pdf Tools
 
 Web application that allows interaction with PDF functionalities.
 

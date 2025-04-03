@@ -1,7 +1,12 @@
 import './App.css';
+import MergePage from './components/MergePage';
 
 function App() {
-  return <>PDF</>;
+  return (
+    <>
+      <MergePage />
+    </>
+  );
 }
 
 export default App;
