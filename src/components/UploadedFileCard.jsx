@@ -35,7 +35,7 @@ const UploadedFileCard = ({
             }}
             className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400"
           >
-            <LeftIcon className="h-4 w-4" />
+            <LeftIcon className="h-4 w-4 text-neutral-700" />
           </button>
           <button
             title="Mover a la derecha"
@@ -45,7 +45,7 @@ const UploadedFileCard = ({
             }}
             className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400"
           >
-            <RightIcon className="h-4 w-4" />
+            <RightIcon className="h-4 w-4 text-neutral-700" />
           </button>
         </div>
         <button
@@ -56,7 +56,7 @@ const UploadedFileCard = ({
           }}
           className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400"
         >
-          <CrossIcon className="h-5 w-5" />
+          <CrossIcon className="h-5 w-5 text-neutral-700" />
         </button>
       </div>
       <div className="relative flex flex-1 flex-col items-center justify-center px-3 pt-4">
