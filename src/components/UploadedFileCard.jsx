@@ -24,7 +24,7 @@ const UploadedFileCard = ({
   return (
     <li
       className="flex h-[270px] w-48 cursor-pointer flex-col overflow-hidden rounded-2xl bg-white transition hover:scale-105"
-      onClick={() => openPreviewCallback(file)}
+      onClick={() => openPreviewCallback(file.originalFile)}
     >
       <div className="flex h-10 items-center justify-between px-3">
         <div className="flex gap-2">
@@ -65,10 +65,10 @@ const UploadedFileCard = ({
           {`#${index + 1}`}
         </p>
         <p
-          title={file.name}
+          title={file.originalFile.name}
           className="w-full justify-center overflow-hidden text-center font-medium text-ellipsis select-none"
         >
-          {file.name}
+          {file.originalFile.name}
         </p>
         <FileIcon className="h-28 text-neutral-700" />
         <p className="text-sm text-black/60 select-none">130 páginas</p>

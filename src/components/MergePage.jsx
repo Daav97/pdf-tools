@@ -8,10 +8,24 @@ const MergePage = () => {
   const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);
 
-  const handleFileChange = (event) => {
-    const newFiles = Array.from(event.target.files);
-    if (newFiles.length > 0) {
-      setPdfFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  //Converts original PDF File into a PDFDocument from pdf-lib
+  const convertToPdfDocument = async (file) => {
+    const arrayBuffer = await file.arrayBuffer();
+    return await PDFDocument.load(arrayBuffer);
+  };
+
+  const handleFileChange = async (event) => {
+    const incomingFiles = Array.from(event.target.files);
+    if (incomingFiles.length > 0) {
+      // Original files are mapped into objects that holds both the original file and the converted PDFDocument file
+      const mappedIncomingFiles = await Promise.all(
+        incomingFiles.map(async (file) => {
+          const pdfDoc = await convertToPdfDocument(file);
+          return { originalFile: file, pdfDocument: pdfDoc };
+        }),
+      );
+
+      setPdfFiles((prevFiles) => [...prevFiles, ...mappedIncomingFiles]);
       event.target.value = null;
     }
   };
@@ -24,12 +38,10 @@ const MergePage = () => {
 
     const mergedPdf = await PDFDocument.create();
 
-    for (const file of pdfFiles) {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer);
+    for (const pdfFile of pdfFiles) {
       const copiedPages = await mergedPdf.copyPages(
-        pdfDoc,
-        pdfDoc.getPageIndices(),
+        pdfFile.pdfDocument,
+        pdfFile.pdfDocument.getPageIndices(),
       );
 
       copiedPages.forEach((page) => mergedPdf.addPage(page));
@@ -107,7 +119,7 @@ const MergePage = () => {
               <UploadedFileCard
                 index={index}
                 file={file}
-                key={file.name}
+                key={file.originalFile.name}
                 deleteFileCallback={() => handleDeleteFile(index)}
                 moveDownFileCallback={() => handleMoveDownFile(index)}
                 moveUpFileCallback={() => handleMoveUpFile(index)}
