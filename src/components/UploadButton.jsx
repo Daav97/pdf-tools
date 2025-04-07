@@ -1,6 +1,6 @@
 const UploadButton = ({
   text = 'Upload',
-  onChangeCallback,
+  onUploadCallback,
   multiple = false,
   accept = 'application/pdf',
 }) => {
@@ -17,7 +17,7 @@ const UploadButton = ({
         type="file"
         accept={accept}
         multiple={multiple}
-        onChange={onChangeCallback}
+        onChange={onUploadCallback}
         className="hidden"
       />
     </div>

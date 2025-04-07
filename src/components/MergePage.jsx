@@ -14,14 +14,16 @@ const MergePage = () => {
     return await PDFDocument.load(arrayBuffer);
   };
 
-  const handleFileChange = async (event) => {
+  const handleFileUpload = async (event) => {
     const incomingFiles = Array.from(event.target.files);
+
     if (incomingFiles.length > 0) {
       // Original files are mapped into objects that holds both the original file and the converted PDFDocument file
       const mappedIncomingFiles = await Promise.all(
         incomingFiles.map(async (file) => {
           const pdfDoc = await convertToPdfDocument(file);
-          return { originalFile: file, pdfDocument: pdfDoc };
+          const id = Date.now();
+          return { id, originalFile: file, pdfDocument: pdfDoc };
         }),
       );
 
@@ -101,7 +103,7 @@ const MergePage = () => {
     <div>
       <UploadButton
         text={'Subir archivos'}
-        onChangeCallback={handleFileChange}
+        onUploadCallback={handleFileUpload}
         multiple={true}
       />
       <button
@@ -118,8 +120,8 @@ const MergePage = () => {
             {pdfFiles.map((file, index) => (
               <UploadedFileCard
                 index={index}
-                file={file}
-                key={file.originalFile.name}
+                originalFile={file.originalFile}
+                key={file.id}
                 deleteFileCallback={() => handleDeleteFile(index)}
                 moveDownFileCallback={() => handleMoveDownFile(index)}
                 moveUpFileCallback={() => handleMoveUpFile(index)}
