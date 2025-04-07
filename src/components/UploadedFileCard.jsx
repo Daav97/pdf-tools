@@ -60,7 +60,7 @@ const UploadedFileCard = ({
         </button>
       </div>
       <div className="relative flex flex-1 flex-col items-center justify-center px-3 pt-4">
-        <p className="absolute top-0 left-0 ml-[13.5px] text-sm font-light text-black/70">
+        <p className="absolute top-0 left-0 ml-[13.5px] text-sm font-light text-black/70 select-none">
           {`#${index + 1}`}
         </p>
         <p
@@ -70,20 +70,20 @@ const UploadedFileCard = ({
           {file.name}
         </p>
         <FileIcon className="h-28 text-neutral-700" />
-        <p className="text-sm font-light">130 páginas</p>
+        <p className="text-sm font-light select-none">130 páginas</p>
       </div>
       <div
         className="flex h-10 cursor-default items-center justify-between px-3"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-sm text-black/60">Selección:</p>
+        <p className="text-sm text-black/60 select-none">Selección:</p>
         <input
           type="text"
           className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
           onChange={(e) => handlePageSelection('start', e.target.value)}
           value={pageSelection.start}
         />
-        <p>/</p>
+        <p className="select-none">/</p>
         <input
           type="text"
           className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
