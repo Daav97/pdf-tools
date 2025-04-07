@@ -6,3 +6,5 @@ Web application that allows interaction with PDF functionalities.
 
 - React
 - Vite
+- pdf-lib
+- tailwind

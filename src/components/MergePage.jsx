@@ -25,28 +25,20 @@ const MergePage = () => {
     const mergedPdf = await PDFDocument.create();
 
     for (const file of pdfFiles) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer);
+      const copiedPages = await mergedPdf.copyPages(
+        pdfDoc,
+        pdfDoc.getPageIndices(),
+      );
 
-      await new Promise((resolve) => {
-        reader.onload = async (e) => {
-          const pdfBytes = e.target.result;
-          const pdfDoc = await PDFDocument.load(pdfBytes);
-          const copiedPages = await mergedPdf.copyPages(
-            pdfDoc,
-            pdfDoc.getPageIndices(),
-          );
-
-          copiedPages.forEach((page) => mergedPdf.addPage(page));
-          resolve();
-        };
-      });
-
-      const mergedPdfBytes = await mergedPdf.save();
-      const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      setMergedPdfUrl(url);
+      copiedPages.forEach((page) => mergedPdf.addPage(page));
     }
+
+    const mergedPdfBytes = await mergedPdf.save();
+    const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    setMergedPdfUrl(url);
   };
 
   const handlePreview = (file) => {
