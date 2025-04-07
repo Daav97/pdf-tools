@@ -12,17 +12,20 @@ const UploadedFileCard = ({
   moveUpFileCallback,
   openPreviewCallback,
 }) => {
-  const [pageSelection, setPageSelection] = useState({ start: 1, end: '-' });
+  const [pagesSelection, setPagesSelection] = useState({ start: 1, end: '-' });
 
-  const handlePageSelection = (position, newValue) => {
-    setPageSelection((prev) => {
-      return { ...prev, [position]: newValue };
-    });
+  const handlePagesSelection = (position, newValue) => {
+    const regex = /^$|^[1-9]\d*$/;
+    if (regex.test(newValue)) {
+      setPagesSelection((prev) => {
+        return { ...prev, [position]: newValue };
+      });
+    }
   };
 
   return (
     <li
-      className="flex h-64 w-48 cursor-pointer flex-col overflow-hidden rounded-2xl bg-white transition hover:scale-105"
+      className="flex h-[270px] w-48 cursor-pointer flex-col overflow-hidden rounded-2xl bg-white transition hover:scale-105"
       onClick={() => openPreviewCallback(file)}
     >
       <div className="flex h-10 items-center justify-between px-3">
@@ -65,30 +68,30 @@ const UploadedFileCard = ({
         </p>
         <p
           title={file.name}
-          className="w-full justify-center overflow-hidden text-center text-ellipsis select-none"
+          className="w-full justify-center overflow-hidden text-center font-medium text-ellipsis select-none"
         >
           {file.name}
         </p>
         <FileIcon className="h-28 text-neutral-700" />
-        <p className="text-sm font-light select-none">130 páginas</p>
+        <p className="text-sm text-black/60 select-none">130 páginas</p>
       </div>
       <div
-        className="flex h-10 cursor-default items-center justify-between px-3"
+        className="flex h-10 cursor-default items-center justify-between px-3 pb-2"
         onClick={(e) => e.stopPropagation()}
       >
         <p className="text-sm text-black/60 select-none">Selección:</p>
         <input
           type="text"
           className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
-          onChange={(e) => handlePageSelection('start', e.target.value)}
-          value={pageSelection.start}
+          onChange={(e) => handlePagesSelection('start', e.target.value)}
+          value={pagesSelection.start}
         />
         <p className="select-none">/</p>
         <input
           type="text"
           className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
-          onChange={(e) => handlePageSelection('end', e.target.value)}
-          value={pageSelection.end}
+          onChange={(e) => handlePagesSelection('end', e.target.value)}
+          value={pagesSelection.end}
         />
       </div>
     </li>
