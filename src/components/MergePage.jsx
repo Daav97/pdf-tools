@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
+import UploadButton from './UploadButton';
+import UploadedFileCard from './UploadedFileCard';
 
 const MergePage = () => {
   const [pdfFiles, setPdfFiles] = useState([]);
   const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewFile, setPreviewFile] = useState(null);
 
   const handleFileChange = (event) => {
-    const newFile = event.target.files[0];
-    if (newFile) {
-      setPdfFiles((prevFiles) => [...prevFiles, newFile]);
+    const newFiles = Array.from(event.target.files);
+    if (newFiles.length > 0) {
+      setPdfFiles((prevFiles) => [...prevFiles, ...newFiles]);
       event.target.value = null;
     }
   };
@@ -32,7 +34,7 @@ const MergePage = () => {
           const pdfDoc = await PDFDocument.load(pdfBytes);
           const copiedPages = await mergedPdf.copyPages(
             pdfDoc,
-            pdfDoc.getPageIndices()
+            pdfDoc.getPageIndices(),
           );
 
           copiedPages.forEach((page) => mergedPdf.addPage(page));
@@ -49,11 +51,11 @@ const MergePage = () => {
 
   const handlePreview = (file) => {
     const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
+    setPreviewFile({ file, url });
   };
 
   const closePreview = () => {
-    setPreviewUrl(null);
+    setPreviewFile(null);
   };
 
   const handleMoveUpFile = (index) => {
@@ -93,33 +95,38 @@ const MergePage = () => {
 
   return (
     <div>
-      <input type="file" accept="application/pdf" onChange={handleFileChange} />
-      <button onClick={handleMergePdfs}>Unir archivos</button>
+      <UploadButton
+        text={'Subir archivos'}
+        onChangeCallback={handleFileChange}
+        multiple={true}
+      />
+      <button
+        onClick={handleMergePdfs}
+        className="m-5 h-10 w-64 cursor-pointer rounded bg-teal-400 px-4 py-2 font-medium text-white shadow select-none hover:bg-teal-300 active:bg-teal-200 disabled:cursor-auto disabled:bg-neutral-400 disabled:text-neutral-300"
+      >
+        Unir archivos
+      </button>
 
       {pdfFiles.length > 0 && (
         <div>
           <h3>Archivos seleccionados:</h3>
-          <ol>
+          <ul className="flex h-[600px] flex-wrap justify-center gap-8 overflow-y-auto bg-neutral-200 p-5">
             {pdfFiles.map((file, index) => (
-              <li key={index}>
-                <button
-                  style={{ margin: '0 10px 0 0 ' }}
-                  onClick={() => handlePreview(file)}
-                >
-                  {file.name}
-                </button>
-                <button onClick={() => handleMoveUpFile(index)}>subir</button>
-                <button onClick={() => handleMoveDownFile(index)}>bajar</button>
-                <button onClick={() => handleDeleteFile(index)}>
-                  eliminar
-                </button>
-              </li>
+              <UploadedFileCard
+                index={index}
+                file={file}
+                key={file.name}
+                deleteFileCallback={() => handleDeleteFile(index)}
+                moveDownFileCallback={() => handleMoveDownFile(index)}
+                moveUpFileCallback={() => handleMoveUpFile(index)}
+                openPreviewCallback={() => handlePreview(file)}
+              />
             ))}
-          </ol>
+          </ul>
         </div>
       )}
 
-      {previewUrl && (
+      {previewFile && (
         <div
           style={{
             position: 'fixed',
@@ -143,7 +150,8 @@ const MergePage = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <iframe src={previewUrl} width="600px" height="400px"></iframe>
+            {previewFile.file.name}
+            <iframe src={previewFile.url} width="600px" height="400px"></iframe>
             <br />
             <button onClick={closePreview}>Cerrar</button>
           </div>
