@@ -60,7 +60,7 @@ const UploadedFileCard = ({
         </button>
       </div>
       <div className="relative flex flex-1 flex-col items-center justify-center px-3 pt-4">
-        <p className="absolute top-0 left-0 ml-4 text-sm font-light text-black/70">
+        <p className="absolute top-0 left-0 ml-[13.5px] text-sm font-light text-black/70">
           {`#${index + 1}`}
         </p>
         <p
