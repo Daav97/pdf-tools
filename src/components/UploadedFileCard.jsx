@@ -11,8 +11,12 @@ const UploadedFileCard = ({
   moveDownFileCallback,
   moveUpFileCallback,
   openPreviewCallback,
+  pageCount,
 }) => {
-  const [pagesSelection, setPagesSelection] = useState({ start: 1, end: '-' });
+  const [pagesSelection, setPagesSelection] = useState({
+    start: 1,
+    end: pageCount,
+  });
 
   const handlePagesSelection = (position, newValue) => {
     const regex = /^$|^[1-9]\d*$/;
@@ -71,7 +75,7 @@ const UploadedFileCard = ({
           {file.originalFile.name}
         </p>
         <FileIcon className="h-28 text-neutral-700" />
-        <p className="text-sm text-black/60 select-none">130 páginas</p>
+        <p className="text-sm text-black/60 select-none">{`${pageCount} ${pageCount === 1 ? 'página' : 'páginas'}`}</p>
       </div>
       <div
         className="flex h-10 cursor-default items-center justify-between px-3 pb-2"
