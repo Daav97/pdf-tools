@@ -102,7 +102,7 @@ const MergePage = () => {
       />
       <button
         onClick={handleMergePdfs}
-        className="m-5 h-10 w-64 cursor-pointer rounded bg-teal-400 px-4 py-2 font-medium text-white shadow select-none hover:bg-teal-300 active:bg-teal-200 disabled:cursor-auto disabled:bg-neutral-400 disabled:text-neutral-300"
+        className="m-5 h-10 w-64 cursor-pointer rounded bg-teal-400 px-4 py-2 font-medium text-white shadow select-none hover:bg-teal-500 active:bg-teal-600 disabled:cursor-auto disabled:bg-neutral-400 disabled:text-neutral-300"
       >
         Unir archivos
       </button>
