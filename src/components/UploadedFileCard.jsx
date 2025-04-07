@@ -17,9 +17,7 @@ const UploadedFileCard = ({
   const handlePagesSelection = (position, newValue) => {
     const regex = /^$|^[1-9]\d*$/;
     if (regex.test(newValue)) {
-      setPagesSelection((prev) => {
-        return { ...prev, [position]: newValue };
-      });
+      setPagesSelection((prev) => ({ ...prev, [position]: newValue }));
     }
   };
 
