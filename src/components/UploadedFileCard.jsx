@@ -79,14 +79,14 @@ const UploadedFileCard = ({
         <p className="text-sm text-black/60">Selección:</p>
         <input
           type="text"
-          className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm"
+          className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
           onChange={(e) => handlePageSelection('start', e.target.value)}
           value={pageSelection.start}
         />
         <p>/</p>
         <input
           type="text"
-          className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm"
+          className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
           onChange={(e) => handlePageSelection('end', e.target.value)}
           value={pageSelection.end}
         />
