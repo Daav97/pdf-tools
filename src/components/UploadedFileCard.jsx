@@ -2,7 +2,8 @@ import FileIcon from './svg/FileIcon';
 import LeftIcon from './svg/LeftIcon';
 import RightIcon from './svg/RightIcon';
 import CrossIcon from './svg/CrossIcon';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { validatePageSelection } from './MergePage/MergePageLogic';
 
 const UploadedFileCard = ({
   index,
@@ -16,15 +17,25 @@ const UploadedFileCard = ({
   pageCount,
 }) => {
   const [selectionMode, setSelectionMode] = useState('all');
+  const [errorPageSelection, setErrorPageSelection] = useState(null);
 
   const handleSelectionModeChange = (e) => {
     setSelectionMode(e.target.value);
     onPageSelectionCallback(index, '');
   };
 
+  useEffect(() => {
+    const error = validatePageSelection(pageSelection, pageCount);
+    if (error) {
+      setErrorPageSelection(error);
+    } else {
+      setErrorPageSelection('');
+    }
+  }, [pageSelection, pageCount]);
+
   return (
     <li
-      className="flex h-[290px] w-48 cursor-pointer flex-col overflow-hidden rounded-2xl bg-white transition hover:scale-105"
+      className="flex h-[290px] w-48 cursor-pointer flex-col rounded-2xl bg-white transition hover:scale-105"
       onClick={() => openPreviewCallback(originalFile)}
     >
       <div className="flex h-10 items-center justify-between px-3">
@@ -94,15 +105,23 @@ const UploadedFileCard = ({
             <option value="custom">Selección</option>
           </select>
         </div>
-        <input
-          type="text"
-          className="w-36 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
-          hidden={selectionMode === 'all'}
-          placeholder="p. ej. 1-5, 8, 11-13"
-          title="Ingresa las páginas o los rangos a utilizar"
-          value={pageSelection}
-          onChange={(e) => onPageSelectionCallback(index, e.target.value)}
-        />
+        <div className="relative flex">
+          {errorPageSelection && (
+            <div className="absolute top-full left-1/2 mt-2 w-max max-w-48 -translate-x-1/2 rounded bg-red-500 px-2 py-1 text-xs text-white shadow">
+              <p>{errorPageSelection}</p>
+              <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-red-500"></div>
+            </div>
+          )}
+          <input
+            type="text"
+            className={`w-36 rounded border pl-1 text-sm text-black/70 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
+            hidden={selectionMode === 'all'}
+            placeholder="p. ej. 1-5, 8, 11-13"
+            title="Ingresa las páginas o los rangos a utilizar"
+            value={pageSelection}
+            onChange={(e) => onPageSelectionCallback(index, e.target.value)}
+          />
+        </div>
       </div>
     </li>
   );

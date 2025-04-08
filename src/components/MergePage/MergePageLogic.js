@@ -34,3 +34,27 @@ export const parsePageSelection = (selection, totalPages) => {
 
   return Array.from(pages).sort((a, b) => a - b);
 };
+
+export const validatePageSelection = (selectionString, maxPage) => {
+  const parts = selectionString.split(',').map((part) => part.trim());
+
+  for (const part of parts) {
+    if (part.includes('-')) {
+      const [start, end] = part.split('-').map((p) => p.trim());
+      if (start === '' || end === '') {
+        return 'Rango mal configurado';
+      }
+
+      if (start > end) {
+        return 'Rango mal configurado, el inicio no puede ser mayor al final';
+      }
+      if (end > maxPage) {
+        return 'Una de las páginas del rango excede el total de páginas';
+      }
+    } else {
+      if (part > maxPage) {
+        return 'La página seleccionada está fuera del límite de páginas';
+      }
+    }
+  }
+};
