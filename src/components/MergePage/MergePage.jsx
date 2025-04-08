@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import UploadButton from '../UploadButton';
 import UploadedFileCard from '../UploadedFileCard';
-import { convertToPdfDocument } from './MergePageLogic';
+import { convertToPdfDocument, parsePageSelection } from './MergePageLogic';
 
 const MergePage = () => {
   const [pdfFiles, setPdfFiles] = useState([]);
@@ -33,6 +33,11 @@ const MergePage = () => {
   };
 
   const handleUpdatePageSelection = (index, newValue) => {
+    const regex = /^[\d,\s-]*$/;
+    if (!regex.test(newValue)) {
+      return;
+    }
+
     setPdfFiles((prev) =>
       prev.map((file, i) =>
         i === index ? { ...file, pageSelection: newValue } : file,
@@ -49,9 +54,20 @@ const MergePage = () => {
     const mergedPdf = await PDFDocument.create();
 
     for (const pdfFile of pdfFiles) {
+      let pagesToUse = [];
+
+      if (pdfFile.pageSelection) {
+        pagesToUse = parsePageSelection(
+          pdfFile.pageSelection,
+          pdfFile.pdfDocument.getPageCount(),
+        );
+      }
+
       const copiedPages = await mergedPdf.copyPages(
         pdfFile.pdfDocument,
-        pdfFile.pdfDocument.getPageIndices(),
+        pagesToUse.length > 0
+          ? pagesToUse
+          : pdfFile.pdfDocument.getPageIndices(),
       );
 
       copiedPages.forEach((page) => mergedPdf.addPage(page));

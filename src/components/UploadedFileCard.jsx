@@ -15,7 +15,7 @@ const UploadedFileCard = ({
   pageSelection,
   pageCount,
 }) => {
-  const [selectionMode, setSelectionMode] = useState('custom');
+  const [selectionMode, setSelectionMode] = useState('all');
 
   const handleSelectionModeChange = (e) => {
     setSelectionMode(e.target.value);
