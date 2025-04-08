@@ -81,10 +81,16 @@ const UploadedFileCard = ({
         className="flex h-10 cursor-default items-center justify-between px-3 pb-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-sm text-black/60 select-none">Selección:</p>
+        <p
+          className="text-sm text-black/60 select-none"
+          title="Elige el rango de páginas a utilizar"
+        >
+          Selección:
+        </p>
         <input
           type="text"
           className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
+          title="Página de inicio"
           onChange={(e) => handlePagesSelection('start', e.target.value)}
           value={pagesSelection.start}
         />
@@ -92,6 +98,7 @@ const UploadedFileCard = ({
         <input
           type="text"
           className="w-10 rounded border border-neutral-200 bg-neutral-100 pl-1 text-sm text-black/70"
+          title="Página de fin"
           onChange={(e) => handlePagesSelection('end', e.target.value)}
           value={pagesSelection.end}
         />
