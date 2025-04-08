@@ -125,7 +125,7 @@ const MergePage = () => {
                 deleteFileCallback={() => handleDeleteFile(index)}
                 moveDownFileCallback={() => handleMoveDownFile(index)}
                 moveUpFileCallback={() => handleMoveUpFile(index)}
-                openPreviewCallback={() => handlePreview(file)}
+                openPreviewCallback={() => handlePreview(file.originalFile)}
                 pageCount={file.pdfDocument.getPageCount()}
               />
             ))}
