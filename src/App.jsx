@@ -1,5 +1,5 @@
 import './App.css';
-import MergePage from './components/MergePage';
+import MergePage from './components/MergePage/MergePage';
 
 function App() {
   return (

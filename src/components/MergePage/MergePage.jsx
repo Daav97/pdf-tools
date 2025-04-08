@@ -1,18 +1,13 @@
 import { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
-import UploadButton from './UploadButton';
-import UploadedFileCard from './UploadedFileCard';
+import UploadButton from '../UploadButton';
+import UploadedFileCard from '../UploadedFileCard';
+import { convertToPdfDocument } from './MergePageLogic';
 
 const MergePage = () => {
   const [pdfFiles, setPdfFiles] = useState([]);
   const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);
-
-  //Converts original PDF File into a PDFDocument from pdf-lib
-  const convertToPdfDocument = async (file) => {
-    const arrayBuffer = await file.arrayBuffer();
-    return await PDFDocument.load(arrayBuffer);
-  };
 
   const handleFileUpload = async (event) => {
     const incomingFiles = Array.from(event.target.files);
@@ -23,13 +18,26 @@ const MergePage = () => {
         incomingFiles.map(async (file) => {
           const pdfDoc = await convertToPdfDocument(file);
           const id = Date.now() + file.name;
-          return { id, originalFile: file, pdfDocument: pdfDoc };
+          return {
+            id,
+            originalFile: file,
+            pdfDocument: pdfDoc,
+            pageSelection: '',
+          };
         }),
       );
 
       setPdfFiles((prevFiles) => [...prevFiles, ...mappedIncomingFiles]);
       event.target.value = null;
     }
+  };
+
+  const handleUpdatePageSelection = (index, newValue) => {
+    setPdfFiles((prev) =>
+      prev.map((file, i) =>
+        i === index ? { ...file, pageSelection: newValue } : file,
+      ),
+    );
   };
 
   const handleMergePdfs = async () => {
@@ -127,6 +135,8 @@ const MergePage = () => {
                 moveUpFileCallback={() => handleMoveUpFile(index)}
                 openPreviewCallback={() => handlePreview(file.originalFile)}
                 pageCount={file.pdfDocument.getPageCount()}
+                pageSelection={file.pageSelection}
+                onPageSelectionCallback={handleUpdatePageSelection}
               />
             ))}
           </ul>
