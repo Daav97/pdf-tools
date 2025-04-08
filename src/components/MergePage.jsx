@@ -22,7 +22,7 @@ const MergePage = () => {
       const mappedIncomingFiles = await Promise.all(
         incomingFiles.map(async (file) => {
           const pdfDoc = await convertToPdfDocument(file);
-          const id = Date.now();
+          const id = Date.now() + file.name;
           return { id, originalFile: file, pdfDocument: pdfDoc };
         }),
       );
