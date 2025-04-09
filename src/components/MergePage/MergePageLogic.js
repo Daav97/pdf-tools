@@ -58,3 +58,10 @@ export const validatePageSelection = (selectionString, maxPage) => {
     }
   }
 };
+
+export const joinFilesNames = (files) => {
+  return files
+    .map(({ originalFile }) => originalFile.name)
+    .map((name) => name.split('.')[0])
+    .join('_');
+};

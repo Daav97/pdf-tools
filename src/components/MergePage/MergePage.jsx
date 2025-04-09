@@ -2,14 +2,21 @@ import { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import UploadButton from '../UploadButton';
 import UploadedFileCard from '../UploadedFileCard';
-import { convertToPdfDocument, parsePageSelection } from './MergePageLogic';
+import {
+  convertToPdfDocument,
+  joinFilesNames,
+  parsePageSelection,
+} from './MergePageLogic';
 import Modal from '../Modal';
 import CrossIcon from '../svg/CrossIcon';
 
 const MergePage = () => {
+  const EXTENSION = '.pdf';
+
   const [pdfFiles, setPdfFiles] = useState([]);
   const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);
+  const [mergedFileName, setMergedFileName] = useState('');
 
   const handleFileUpload = async (event) => {
     const incomingFiles = Array.from(event.target.files);
@@ -55,6 +62,8 @@ const MergePage = () => {
 
     const mergedPdf = await PDFDocument.create();
 
+    setMergedFileName(joinFilesNames(pdfFiles));
+
     for (const pdfFile of pdfFiles) {
       let pagesToUse = [];
 
@@ -90,6 +99,10 @@ const MergePage = () => {
     setPreviewFile(null);
   };
 
+  const closeMergedPreview = () => {
+    setMergedPdfUrl(null);
+  };
+
   const handleMoveUpFile = (index) => {
     if (index === 0) return;
 
@@ -123,6 +136,10 @@ const MergePage = () => {
 
       return newFiles;
     });
+  };
+
+  const handleMergedFileNameChange = (event) => {
+    setMergedFileName(event.target.value);
   };
 
   return (
@@ -180,12 +197,41 @@ const MergePage = () => {
       )}
 
       {mergedPdfUrl && (
-        <div>
-          <iframe src={mergedPdfUrl} width="500px" height="600px"></iframe>
-          <a href={mergedPdfUrl} download="modified.pdf">
-            Descargar
-          </a>
-        </div>
+        <Modal>
+          <div className="relative flex h-[700px] w-[600px] flex-col gap-2">
+            <button
+              onClick={closeMergedPreview}
+              className="absolute -top-1 -right-1 cursor-pointer rounded-full bg-neutral-400 shadow shadow-black/50 hover:bg-red-600"
+            >
+              <CrossIcon className="h-6 w-6 text-neutral-100" />
+            </button>
+            <div className="flex max-w-3/4 items-center self-center">
+              <div className="relative w-full">
+                <span
+                  className="pointer-events-none invisible inline-block px-2 font-semibold whitespace-pre"
+                  aria-hidden="true"
+                >
+                  {mergedFileName || ''}
+                </span>
+                <input
+                  title={mergedFileName}
+                  value={mergedFileName}
+                  onChange={handleMergedFileNameChange}
+                  className="absolute top-0 left-0 w-full truncate rounded border border-neutral-300 bg-neutral-200 text-center font-semibold focus:outline-sky-300/50"
+                />
+              </div>
+              <p className="font-semibold text-neutral-800">{EXTENSION}</p>
+            </div>
+            <iframe src={mergedPdfUrl} className="h-full w-full"></iframe>
+            <a
+              href={mergedPdfUrl}
+              download={mergedFileName + EXTENSION}
+              className="w-36 self-center rounded bg-sky-500 p-2 text-center font-bold text-white shadow shadow-black/30 hover:bg-sky-600 active:bg-sky-700"
+            >
+              Descargar
+            </a>
+          </div>
+        </Modal>
       )}
     </div>
   );
