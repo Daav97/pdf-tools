@@ -97,7 +97,7 @@ const UploadedFileCard = ({
             Páginas:
           </p>
           <select
-            className="rounded border border-neutral-200 bg-neutral-100 text-sm text-black/70"
+            className="rounded border border-neutral-200 bg-neutral-100 text-sm text-black/70 select-none"
             onChange={handleSelectionModeChange}
             value={selectionMode}
           >
