@@ -3,6 +3,8 @@ import { PDFDocument } from 'pdf-lib';
 import UploadButton from '../UploadButton';
 import UploadedFileCard from '../UploadedFileCard';
 import { convertToPdfDocument, parsePageSelection } from './MergePageLogic';
+import Modal from '../Modal';
+import CrossIcon from '../svg/CrossIcon';
 
 const MergePage = () => {
   const [pdfFiles, setPdfFiles] = useState([]);
@@ -160,35 +162,21 @@ const MergePage = () => {
       )}
 
       {previewFile && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            background: 'rgba(0, 0, 0, 0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onClick={closePreview}
-        >
-          <div
-            style={{
-              background: 'white',
-              padding: '20px',
-              borderRadius: '10px',
-              position: 'relative',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {previewFile.file.name}
-            <iframe src={previewFile.url} width="600px" height="400px"></iframe>
+        <Modal closeCallback={closePreview}>
+          <div className="relative flex flex-col gap-2">
+            <button
+              onClick={closePreview}
+              className="absolute -top-1 -right-1 cursor-pointer rounded-full bg-neutral-400 shadow shadow-black/50 hover:bg-red-600"
+            >
+              <CrossIcon className="h-6 w-6 text-neutral-100" />
+            </button>
+            <p className="w-full text-center font-semibold">
+              {previewFile.file.name}
+            </p>
+            <iframe src={previewFile.url} width="600px" height="700px"></iframe>
             <br />
-            <button onClick={closePreview}>Cerrar</button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {mergedPdfUrl && (

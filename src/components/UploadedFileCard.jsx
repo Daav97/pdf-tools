@@ -46,9 +46,9 @@ const UploadedFileCard = ({
               e.stopPropagation();
               moveUpFileCallback();
             }}
-            className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400"
+            className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600"
           >
-            <LeftIcon className="h-4 w-4 text-neutral-700" />
+            <LeftIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
           </button>
           <button
             title="Mover a la derecha"
@@ -56,9 +56,9 @@ const UploadedFileCard = ({
               e.stopPropagation();
               moveDownFileCallback();
             }}
-            className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400"
+            className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600 hover:text-white"
           >
-            <RightIcon className="h-4 w-4 text-neutral-700" />
+            <RightIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
           </button>
         </div>
         <button
@@ -67,9 +67,9 @@ const UploadedFileCard = ({
             e.stopPropagation();
             deleteFileCallback();
           }}
-          className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400"
+          className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600"
         >
-          <CrossIcon className="h-5 w-5 text-neutral-700" />
+          <CrossIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
         </button>
       </div>
       <div className="relative flex flex-1 flex-col items-center justify-center px-3 pt-4">
@@ -97,7 +97,7 @@ const UploadedFileCard = ({
             Páginas:
           </p>
           <select
-            className="rounded border border-neutral-200 bg-neutral-100 text-sm text-black/70 select-none"
+            className="rounded border border-neutral-200 bg-neutral-100 text-sm text-black/70 select-none focus:outline-sky-300/50"
             onChange={handleSelectionModeChange}
             value={selectionMode}
           >
@@ -114,7 +114,7 @@ const UploadedFileCard = ({
           )}
           <input
             type="text"
-            className={`w-36 rounded border pl-1 text-sm text-black/70 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
+            className={`w-36 rounded border pl-1 text-sm text-black/70 focus:outline-sky-300/50 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
             hidden={selectionMode === 'all'}
             placeholder="p. ej. 1-5, 8, 11-13"
             title="Ingresa las páginas o los rangos a utilizar"
