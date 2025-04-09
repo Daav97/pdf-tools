@@ -2,7 +2,7 @@ import FileIcon from './svg/FileIcon';
 import LeftIcon from './svg/LeftIcon';
 import RightIcon from './svg/RightIcon';
 import CrossIcon from './svg/CrossIcon';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { validatePageSelection } from './MergePage/MergePageLogic';
 
 const UploadedFileCard = ({
@@ -18,11 +18,7 @@ const UploadedFileCard = ({
 }) => {
   const [selectionMode, setSelectionMode] = useState('all');
   const [errorPageSelection, setErrorPageSelection] = useState(null);
-
-  const handleSelectionModeChange = (e) => {
-    setSelectionMode(e.target.value);
-    onPageSelectionCallback(index, '');
-  };
+  const selectionInputRef = useRef(null);
 
   useEffect(() => {
     const error = validatePageSelection(pageSelection, pageCount);
@@ -32,6 +28,23 @@ const UploadedFileCard = ({
       setErrorPageSelection('');
     }
   }, [pageSelection, pageCount]);
+
+  useEffect(() => {
+    if (selectionMode === 'custom') {
+      selectionInputRef.current.focus();
+    }
+  }, [selectionMode]);
+
+  const handleOnBlurPageSelection = (e) => {
+    if (e.target.value === '') {
+      onPageSelectionCallback(index, '1');
+    }
+  };
+
+  const handleSelectionModeChange = (e) => {
+    setSelectionMode(e.target.value);
+    onPageSelectionCallback(index, '');
+  };
 
   return (
     <li
@@ -113,6 +126,7 @@ const UploadedFileCard = ({
             </div>
           )}
           <input
+            ref={selectionInputRef}
             type="text"
             className={`w-36 rounded border pl-1 text-sm text-black/70 focus:outline-sky-300/50 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
             hidden={selectionMode === 'all'}
@@ -120,6 +134,7 @@ const UploadedFileCard = ({
             title="Ingresa las páginas o los rangos a utilizar"
             value={pageSelection}
             onChange={(e) => onPageSelectionCallback(index, e.target.value)}
+            onBlur={handleOnBlurPageSelection}
           />
         </div>
       </div>
