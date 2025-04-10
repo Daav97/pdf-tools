@@ -151,18 +151,13 @@ const MergePage = () => {
 
   return (
     <div className="flex h-full flex-col bg-neutral-50">
-      <div className="flex h-16">
-        <UploadButton
-          text={'Subir archivos'}
-          onUploadCallback={handleFileUpload}
-          multiple={true}
-          ref={uploadButton}
-          hidden={false}
-        />
-      </div>
       <div className="flex justify-between px-2 pb-1">
-        <p className="flex items-end font-semibold">Archivos seleccionados:</p>
-        <div className="flex gap-4">
+        <p
+          className={`flex h-16 items-end font-semibold ${pdfFiles.length <= 0 && 'invisible'}`}
+        >
+          Archivos seleccionados:
+        </p>
+        <div className="flex items-end gap-4" hidden={pdfFiles.length <= 0}>
           <button
             title="Añadir archivo"
             className="group mb-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600 active:bg-red-700"
@@ -179,7 +174,18 @@ const MergePage = () => {
           </button>
         </div>
       </div>
-      <ul className="flex flex-1 flex-wrap justify-center gap-8 overflow-auto border border-neutral-300 bg-neutral-200 p-5">
+      <ul
+        className={`relative flex flex-1 flex-wrap justify-center gap-8 overflow-auto border border-neutral-300 bg-neutral-200 p-5 ${pdfFiles.length <= 0 && 'items-center'}`}
+      >
+        <div>
+          <UploadButton
+            text={'Subir archivos'}
+            onUploadCallback={handleFileUpload}
+            multiple={true}
+            ref={uploadButton}
+            hidden={pdfFiles.length > 0}
+          />
+        </div>
         {pdfFiles.length > 0 && (
           <>
             {pdfFiles.map((file, index) => (
