@@ -80,7 +80,7 @@ const UploadedFileCard = ({
             e.stopPropagation();
             deleteFileCallback();
           }}
-          className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600"
+          className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600"
         >
           <CrossIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
         </button>

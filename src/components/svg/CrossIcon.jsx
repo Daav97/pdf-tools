@@ -1,4 +1,4 @@
-const TrashIcon = ({ className = '' }) => {
+const CrossIcon = ({ className = '' }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -20,4 +20,4 @@ const TrashIcon = ({ className = '' }) => {
     </svg>
   );
 };
-export default TrashIcon;
+export default CrossIcon;
