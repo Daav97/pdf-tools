@@ -143,23 +143,18 @@ const MergePage = () => {
   };
 
   return (
-    <div>
-      <UploadButton
-        text={'Subir archivos'}
-        onUploadCallback={handleFileUpload}
-        multiple={true}
-      />
-      <button
-        onClick={handleMergePdfs}
-        className="m-5 h-10 w-64 cursor-pointer rounded bg-teal-400 px-4 py-2 font-medium text-white shadow select-none hover:bg-teal-500 active:bg-teal-600 disabled:cursor-auto disabled:bg-neutral-400 disabled:text-neutral-300"
-      >
-        Unir archivos
-      </button>
-
-      {pdfFiles.length > 0 && (
-        <div>
-          <h3>Archivos seleccionados:</h3>
-          <ul className="flex h-[600px] flex-wrap justify-center gap-8 overflow-y-auto bg-neutral-200 p-5">
+    <div className="flex h-full flex-col bg-neutral-50">
+      <div className="flex h-16">
+        <UploadButton
+          text={'Subir archivos'}
+          onUploadCallback={handleFileUpload}
+          multiple={true}
+        />
+      </div>
+      <p className="mx-2 font-semibold">Archivos seleccionados:</p>
+      <ul className="flex flex-1 flex-wrap justify-center gap-8 overflow-auto border border-neutral-300 bg-neutral-200 p-5">
+        {pdfFiles.length > 0 && (
+          <>
             {pdfFiles.map((file, index) => (
               <UploadedFileCard
                 index={index}
@@ -174,10 +169,19 @@ const MergePage = () => {
                 onPageSelectionCallback={handleUpdatePageSelection}
               />
             ))}
-          </ul>
-        </div>
-      )}
-
+          </>
+        )}
+      </ul>
+      <div className="flex min-h-4 items-center justify-center">
+        <button
+          onClick={handleMergePdfs}
+          className="m-4 h-16 w-72 cursor-pointer rounded bg-teal-400 px-4 py-2 text-xl font-medium text-white shadow select-none hover:bg-teal-500 active:bg-teal-600 disabled:cursor-auto disabled:bg-neutral-400 disabled:text-neutral-300"
+          disabled={pdfFiles.length < 2}
+          hidden={pdfFiles.length <= 0}
+        >
+          Unir archivos
+        </button>
+      </div>
       {previewFile && (
         <Modal closeCallback={closePreview}>
           <div className="relative flex flex-col gap-2">
@@ -190,7 +194,10 @@ const MergePage = () => {
             <p className="w-full text-center font-semibold">
               {previewFile.file.name}
             </p>
-            <iframe src={previewFile.url} width="600px" height="700px"></iframe>
+            <iframe
+              src={previewFile.url}
+              className="h-[700px] w-[600px] rounded border-y border-neutral-200"
+            ></iframe>
             <br />
           </div>
         </Modal>
@@ -222,7 +229,10 @@ const MergePage = () => {
               </div>
               <p className="font-semibold text-neutral-800">{EXTENSION}</p>
             </div>
-            <iframe src={mergedPdfUrl} className="h-full w-full"></iframe>
+            <iframe
+              src={mergedPdfUrl}
+              className="h-full w-full rounded border-y border-neutral-200"
+            ></iframe>
             <a
               href={mergedPdfUrl}
               download={mergedFileName + EXTENSION}

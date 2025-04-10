@@ -48,7 +48,7 @@ const UploadedFileCard = ({
 
   return (
     <li
-      className="flex h-[290px] w-48 cursor-pointer flex-col rounded-2xl bg-white transition hover:scale-105"
+      className="flex h-[290px] w-48 cursor-pointer flex-col rounded-2xl bg-white shadow-md transition hover:scale-105"
       onClick={() => openPreviewCallback(originalFile)}
     >
       <div className="flex h-10 items-center justify-between px-3">
