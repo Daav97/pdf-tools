@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import UploadButton from '../UploadButton';
 import UploadedFileCard from '../UploadedFileCard';
@@ -18,6 +18,8 @@ const MergePage = () => {
   const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);
   const [mergedFileName, setMergedFileName] = useState('');
+
+  const uploadButton = useRef(null);
 
   const handleFileUpload = async (event) => {
     const incomingFiles = Array.from(event.target.files);
@@ -143,6 +145,10 @@ const MergePage = () => {
     setMergedFileName(event.target.value);
   };
 
+  const handleClearPDFFiles = () => {
+    setPdfFiles([]);
+  };
+
   return (
     <div className="flex h-full flex-col bg-neutral-50">
       <div className="flex h-16">
@@ -150,6 +156,8 @@ const MergePage = () => {
           text={'Subir archivos'}
           onUploadCallback={handleFileUpload}
           multiple={true}
+          ref={uploadButton}
+          hidden={false}
         />
       </div>
       <div className="flex justify-between px-2 pb-1">
@@ -157,13 +165,15 @@ const MergePage = () => {
         <div className="flex gap-4">
           <button
             title="Añadir archivo"
-            className="group mb-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-700 active:bg-red-800"
+            className="group mb-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600 active:bg-red-700"
+            onClick={() => uploadButton.current.click()}
           >
             <CrossIcon className="h-7 w-7 rotate-45 text-neutral-700 group-hover:text-white" />
           </button>
           <button
             title="Eliminar todos los archivos"
-            className="group mb-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-700 active:bg-red-800"
+            className="group mb-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600 active:bg-red-700"
+            onClick={handleClearPDFFiles}
           >
             <TrashIcon className="h-6 w-6 text-neutral-700 group-hover:text-white" />
           </button>

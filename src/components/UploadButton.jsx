@@ -3,9 +3,11 @@ const UploadButton = ({
   onUploadCallback,
   multiple = false,
   accept = 'application/pdf',
+  ref = null,
+  hidden = false,
 }) => {
   return (
-    <div className="flex">
+    <div className="flex" hidden={hidden}>
       <label
         htmlFor="inputFile"
         className="m-5 flex h-10 w-64 cursor-pointer justify-center rounded bg-red-700 px-4 py-2 font-medium text-white shadow select-none hover:bg-red-800 active:bg-red-900"
@@ -19,6 +21,7 @@ const UploadButton = ({
         multiple={multiple}
         onChange={onUploadCallback}
         className="hidden"
+        ref={ref}
       />
     </div>
   );
