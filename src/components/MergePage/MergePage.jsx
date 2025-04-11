@@ -4,7 +4,7 @@ import UploadButton from '../UploadButton';
 import UploadedFileCard from '../UploadedFileCard';
 import {
   joinFilesNames,
-  mapFilesIntoHoldingObject,
+  processUploadedPdfFiles,
   parsePageSelection,
 } from './MergePageLogic';
 import Modal from '../Modal';
@@ -27,10 +27,16 @@ const MergePage = () => {
 
     if (incomingFiles.length > 0) {
       // Original files are mapped into objects that holds both the original file and the converted PDFDocument file
-      const mappedIncomingFiles =
-        await mapFilesIntoHoldingObject(incomingFiles);
+      const [convertedFiles, failedFiles] =
+        await processUploadedPdfFiles(incomingFiles);
 
-      setPdfFiles((prevFiles) => [...prevFiles, ...mappedIncomingFiles]);
+      if (failedFiles.length > 0) {
+        alert(
+          `No fue posible procesar los archivos: ${failedFiles.join(', ')}`,
+        );
+      }
+
+      setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
       event.target.value = null;
     }
   };
@@ -150,9 +156,14 @@ const MergePage = () => {
 
     const incomingFiles = Array.from(e.dataTransfer.files);
 
-    const mappedIncomingFiles = await mapFilesIntoHoldingObject(incomingFiles);
+    const [convertedFiles, failedFiles] =
+      await processUploadedPdfFiles(incomingFiles);
 
-    setPdfFiles((prevFiles) => [...prevFiles, ...mappedIncomingFiles]);
+    if (failedFiles.length > 0) {
+      alert(`No fue posible procesar los archivos: ${failedFiles.join(', ')}`);
+    }
+
+    setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
   };
 
   const handleDragEnter = (e) => {
@@ -212,7 +223,7 @@ const MergePage = () => {
               multiple={true}
               ref={uploadButton}
             />
-            <p className="text-center text-lg text-black/50">
+            <p className="text-center text-lg text-black/50 select-none">
               o arrastra y suelta aquí
             </p>
           </div>

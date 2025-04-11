@@ -66,8 +66,25 @@ export const joinFilesNames = (files) => {
     .join('_');
 };
 
-export const mapFilesIntoHoldingObject = async (files) => {
-  return await Promise.all(
+/**
+ * Processes a list of files and attempts to convert valid PDF files
+ * into structured internal objects, separating successful and failed ones.
+ *
+ * @async
+ * @function
+ * @param {File[]} files - List of uploaded files to process.
+ * @returns {Promise<[Array<Object>, Array<string>]>} A promise that resolves to a tuple containing:
+ *   - An array of successfully processed PDF file objects.
+ *   - An array of file names that failed to process.
+ *
+ * Each successful object includes:
+ *   - `id`: A unique identifier based on timestamp and file name.
+ *   - `originalFile`: The original uploaded file.
+ *   - `pdfDocument`: The parsed PDF document.
+ *   - `pageSelection`: An initially empty string for page selection.
+ */
+export const processUploadedPdfFiles = async (files) => {
+  const results = await Promise.allSettled(
     files.map(async (file) => {
       const pdfDoc = await convertToPdfDocument(file);
       const id = Date.now() + file.name;
@@ -79,4 +96,18 @@ export const mapFilesIntoHoldingObject = async (files) => {
       };
     }),
   );
+
+  const successfulFiles = [];
+  const failedFiles = [];
+
+  results.forEach((result, index) => {
+    if (result.status === 'fulfilled') {
+      successfulFiles.push(result.value);
+    } else {
+      failedFiles.push(files[index].name);
+      console.error(`Error al procesar ${files[index].name}:`, result.reason);
+    }
+  });
+
+  return [successfulFiles, failedFiles];
 };
