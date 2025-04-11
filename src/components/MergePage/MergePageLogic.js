@@ -111,3 +111,19 @@ export const processUploadedPdfFiles = async (files) => {
 
   return [successfulFiles, failedFiles];
 };
+
+export const isPdfFile = (file) => file.type === 'application/pdf';
+
+export const validatePDFFiles = (files) => {
+  const validFiles = [];
+  const invalidFiles = [];
+
+  files.forEach((file) => {
+    if (isPdfFile(file)) {
+      validFiles.push(file);
+    } else {
+      invalidFiles.push(file.name);
+    }
+  });
+  return [validFiles, invalidFiles];
+};

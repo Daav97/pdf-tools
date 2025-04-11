@@ -6,6 +6,7 @@ import {
   joinFilesNames,
   processUploadedPdfFiles,
   parsePageSelection,
+  validatePDFFiles,
 } from './MergePageLogic';
 import Modal from '../Modal';
 import CrossIcon from '../svg/CrossIcon';
@@ -28,15 +29,7 @@ const MergePage = () => {
     const incomingFiles = Array.from(event.target.files);
 
     if (incomingFiles.length > 0) {
-      // Original files are mapped into objects that holds both the original file and the converted PDFDocument file
-      const [convertedFiles, failedFiles] =
-        await processUploadedPdfFiles(incomingFiles);
-
-      if (failedFiles.length > 0) {
-        setToastMessage(
-          `No fue posible procesar los archivos:\n${failedFiles.join(', ')}`,
-        );
-      }
+      const convertedFiles = await validateAndConvertFiles(incomingFiles);
 
       setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
       event.target.value = null;
@@ -157,15 +150,7 @@ const MergePage = () => {
     setIsDraggingFiles(false);
 
     const incomingFiles = Array.from(e.dataTransfer.files);
-
-    const [convertedFiles, failedFiles] =
-      await processUploadedPdfFiles(incomingFiles);
-
-    if (failedFiles.length > 0) {
-      setToastMessage(
-        `No fue posible procesar los archivos: ${failedFiles.join(', ')}`,
-      );
-    }
+    const convertedFiles = await validateAndConvertFiles(incomingFiles);
 
     setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
   };
@@ -178,6 +163,27 @@ const MergePage = () => {
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDraggingFiles(false);
+  };
+
+  const validateAndConvertFiles = async (files) => {
+    const [validPDFFiles, invalidFiles] = validatePDFFiles(files);
+
+    if (invalidFiles.length > 0) {
+      setToastMessage(`
+      Los siguientes archivos no son archivos PDF válidos: ${invalidFiles.join(', ')}
+      `);
+    }
+
+    const [convertedFiles, failedFiles] =
+      await processUploadedPdfFiles(validPDFFiles);
+
+    if (failedFiles.length > 0) {
+      setToastMessage(
+        `No fue posible procesar los archivos: ${failedFiles.join(', ')}`,
+      );
+    }
+
+    return convertedFiles;
   };
 
   return (
