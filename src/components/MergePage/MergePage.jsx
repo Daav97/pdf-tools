@@ -134,7 +134,14 @@ const MergePage = () => {
   };
 
   const handleMergedFileNameChange = (event) => {
-    setMergedFileName(event.target.value);
+    const newName = event.target.value;
+
+    const regex = /^[a-zA-Z0-9 _-]*$/;
+    if (!regex.test(newName)) {
+      return;
+    }
+
+    setMergedFileName(newName);
   };
 
   const handleClearPDFFiles = () => {
