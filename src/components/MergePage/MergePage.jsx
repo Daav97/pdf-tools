@@ -192,7 +192,7 @@ const MergePage = () => {
         <p
           className={`flex h-16 items-end font-semibold ${pdfFiles.length <= 0 && 'invisible'}`}
         >
-          Archivos seleccionados:
+          {`Archivos seleccionados (${pdfFiles.length}):`}
         </p>
         <div className="flex items-end gap-4" hidden={pdfFiles.length <= 0}>
           <button
