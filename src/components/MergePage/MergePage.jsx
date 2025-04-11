@@ -174,20 +174,27 @@ const MergePage = () => {
 
   const validateAndConvertFiles = async (files) => {
     const [validPDFFiles, invalidFiles] = validatePDFFiles(files);
+    let errorMessage = '';
 
     if (invalidFiles.length > 0) {
-      setToastMessage(`
+      errorMessage += `
       Los siguientes archivos no son archivos PDF válidos: ${invalidFiles.join(', ')}
-      `);
+      . `;
     }
 
-    const [convertedFiles, failedFiles] =
+    const [convertedFiles, failedFiles, encryptedFiles] =
       await processUploadedPdfFiles(validPDFFiles);
 
+    if (encryptedFiles.length > 0) {
+      errorMessage += `Los siguientes archivos tienen contraseña: ${encryptedFiles.join(', ')}. `;
+    }
+
     if (failedFiles.length > 0) {
-      setToastMessage(
-        `No fue posible procesar los archivos: ${failedFiles.join(', ')}`,
-      );
+      errorMessage += `No fue posible procesar los archivos: ${failedFiles.join(', ')}. `;
+    }
+
+    if (errorMessage) {
+      setToastMessage(errorMessage);
     }
 
     return convertedFiles;

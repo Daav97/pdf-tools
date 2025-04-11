@@ -86,30 +86,41 @@ export const joinFilesNames = (files) => {
 export const processUploadedPdfFiles = async (files) => {
   const results = await Promise.allSettled(
     files.map(async (file) => {
-      const pdfDoc = await convertToPdfDocument(file);
-      const id = Date.now() + file.name;
-      return {
-        id,
-        originalFile: file,
-        pdfDocument: pdfDoc,
-        pageSelection: '',
-      };
+      try {
+        const pdfDoc = await convertToPdfDocument(file);
+        const id = Date.now() + file.name;
+        return {
+          id,
+          originalFile: file,
+          pdfDocument: pdfDoc,
+          pageSelection: '',
+        };
+      } catch (error) {
+        throw { error, file };
+      }
     }),
   );
 
   const successfulFiles = [];
   const failedFiles = [];
+  const encryptedFiles = [];
 
-  results.forEach((result, index) => {
+  results.forEach((result) => {
     if (result.status === 'fulfilled') {
       successfulFiles.push(result.value);
     } else {
-      failedFiles.push(files[index].name);
-      console.error(`Error al procesar ${files[index].name}:`, result.reason);
+      const { error, file } = result.reason;
+
+      if (error?.message?.includes('is encrypted')) {
+        encryptedFiles.push(file.name);
+      } else {
+        failedFiles.push(file.name);
+      }
+      console.error(`Error al procesar ${file.name}:`, result.reason);
     }
   });
 
-  return [successfulFiles, failedFiles];
+  return [successfulFiles, failedFiles, encryptedFiles];
 };
 
 export const isPdfFile = (file) => file.type === 'application/pdf';
