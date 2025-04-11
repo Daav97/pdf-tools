@@ -65,3 +65,18 @@ export const joinFilesNames = (files) => {
     .map((name) => name.split('.')[0])
     .join('_');
 };
+
+export const mapFilesIntoHoldingObject = async (files) => {
+  return await Promise.all(
+    files.map(async (file) => {
+      const pdfDoc = await convertToPdfDocument(file);
+      const id = Date.now() + file.name;
+      return {
+        id,
+        originalFile: file,
+        pdfDocument: pdfDoc,
+        pageSelection: '',
+      };
+    }),
+  );
+};

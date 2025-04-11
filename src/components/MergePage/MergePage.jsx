@@ -3,8 +3,8 @@ import { PDFDocument } from 'pdf-lib';
 import UploadButton from '../UploadButton';
 import UploadedFileCard from '../UploadedFileCard';
 import {
-  convertToPdfDocument,
   joinFilesNames,
+  mapFilesIntoHoldingObject,
   parsePageSelection,
 } from './MergePageLogic';
 import Modal from '../Modal';
@@ -18,6 +18,7 @@ const MergePage = () => {
   const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);
   const [mergedFileName, setMergedFileName] = useState('');
+  const [isDraggingFiles, setIsDraggingFiles] = useState(false);
 
   const uploadButton = useRef(null);
 
@@ -26,18 +27,8 @@ const MergePage = () => {
 
     if (incomingFiles.length > 0) {
       // Original files are mapped into objects that holds both the original file and the converted PDFDocument file
-      const mappedIncomingFiles = await Promise.all(
-        incomingFiles.map(async (file) => {
-          const pdfDoc = await convertToPdfDocument(file);
-          const id = Date.now() + file.name;
-          return {
-            id,
-            originalFile: file,
-            pdfDocument: pdfDoc,
-            pageSelection: '',
-          };
-        }),
-      );
+      const mappedIncomingFiles =
+        await mapFilesIntoHoldingObject(incomingFiles);
 
       setPdfFiles((prevFiles) => [...prevFiles, ...mappedIncomingFiles]);
       event.target.value = null;
@@ -149,6 +140,31 @@ const MergePage = () => {
     setPdfFiles([]);
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setIsDraggingFiles(false);
+
+    const incomingFiles = Array.from(e.dataTransfer.files);
+
+    const mappedIncomingFiles = await mapFilesIntoHoldingObject(incomingFiles);
+
+    setPdfFiles((prevFiles) => [...prevFiles, ...mappedIncomingFiles]);
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setIsDraggingFiles(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDraggingFiles(false);
+  };
+
   return (
     <div className="flex h-full flex-col bg-neutral-50">
       <div className="flex justify-between px-2 pb-1">
@@ -175,17 +191,32 @@ const MergePage = () => {
         </div>
       </div>
       <ul
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
         className={`relative flex flex-1 flex-wrap justify-center gap-8 overflow-auto border border-neutral-300 bg-neutral-200 p-5 ${pdfFiles.length <= 0 && 'items-center'}`}
       >
-        <div>
-          <UploadButton
-            text={'Subir archivos'}
-            onUploadCallback={handleFileUpload}
-            multiple={true}
-            ref={uploadButton}
-            hidden={pdfFiles.length > 0}
-          />
-        </div>
+        {isDraggingFiles && (
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center border-2 border-neutral-500 bg-black/70">
+            <p className="text-lg font-semibold text-white">
+              ¡Suelta el archivo aquí!
+            </p>
+          </div>
+        )}
+        {!isDraggingFiles && (
+          <div hidden={pdfFiles.length > 0}>
+            <UploadButton
+              text={'Subir archivos'}
+              onUploadCallback={handleFileUpload}
+              multiple={true}
+              ref={uploadButton}
+            />
+            <p className="text-center text-lg text-black/50">
+              o arrastra y suelta aquí
+            </p>
+          </div>
+        )}
         {pdfFiles.length > 0 && (
           <>
             {pdfFiles.map((file, index) => (
@@ -200,6 +231,7 @@ const MergePage = () => {
                 pageCount={file.pdfDocument.getPageCount()}
                 pageSelection={file.pageSelection}
                 onPageSelectionCallback={handleUpdatePageSelection}
+                className={isDraggingFiles ? 'pointer-events-none' : ''}
               />
             ))}
           </>
