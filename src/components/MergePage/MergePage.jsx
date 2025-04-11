@@ -10,6 +10,7 @@ import {
 import Modal from '../Modal';
 import CrossIcon from '../svg/CrossIcon';
 import TrashIcon from '../svg/TrashIcon';
+import Toast from '../Toast';
 
 const MergePage = () => {
   const EXTENSION = '.pdf';
@@ -19,6 +20,7 @@ const MergePage = () => {
   const [previewFile, setPreviewFile] = useState(null);
   const [mergedFileName, setMergedFileName] = useState('');
   const [isDraggingFiles, setIsDraggingFiles] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const uploadButton = useRef(null);
 
@@ -31,8 +33,8 @@ const MergePage = () => {
         await processUploadedPdfFiles(incomingFiles);
 
       if (failedFiles.length > 0) {
-        alert(
-          `No fue posible procesar los archivos: ${failedFiles.join(', ')}`,
+        setToastMessage(
+          `No fue posible procesar los archivos:\n${failedFiles.join(', ')}`,
         );
       }
 
@@ -56,7 +58,7 @@ const MergePage = () => {
 
   const handleMergePdfs = async () => {
     if (pdfFiles.length < 2) {
-      alert('Sube por lo menos dos archivos a unir');
+      setToastMessage('Sube por lo menos dos archivos a unir');
       return;
     }
 
@@ -160,7 +162,9 @@ const MergePage = () => {
       await processUploadedPdfFiles(incomingFiles);
 
     if (failedFiles.length > 0) {
-      alert(`No fue posible procesar los archivos: ${failedFiles.join(', ')}`);
+      setToastMessage(
+        `No fue posible procesar los archivos: ${failedFiles.join(', ')}`,
+      );
     }
 
     setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
@@ -254,6 +258,11 @@ const MergePage = () => {
           className="m-4 h-16 w-72 cursor-pointer rounded bg-teal-400 px-4 py-2 text-xl font-medium text-white shadow select-none hover:bg-teal-500 active:bg-teal-600 disabled:cursor-auto disabled:bg-neutral-400 disabled:text-neutral-300"
           disabled={pdfFiles.length < 2}
           hidden={pdfFiles.length <= 0}
+          title={
+            pdfFiles.length < 2
+              ? 'Agrega más archivos para unir'
+              : 'Unir archivos'
+          }
         >
           Unir archivos
         </button>
@@ -318,6 +327,10 @@ const MergePage = () => {
             </a>
           </div>
         </Modal>
+      )}
+
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
       )}
     </div>
   );
