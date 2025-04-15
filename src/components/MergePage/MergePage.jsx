@@ -301,7 +301,7 @@ const MergePage = () => {
             </p>
             <iframe
               src={previewFile.url}
-              className="h-[700px] w-[600px] rounded border-y border-neutral-200"
+              className="h-[70vh] w-[80vw] rounded border-y border-neutral-200 lg:h-[70vh] lg:w-[50vw] 2xl:h-[85vh] 2xl:w-[35vw]"
             ></iframe>
             <br />
           </div>
@@ -310,7 +310,7 @@ const MergePage = () => {
 
       {mergedPdfUrl && (
         <Modal>
-          <div className="relative flex h-[700px] w-[600px] flex-col gap-2">
+          <div className="relative flex h-[70vh] w-[80vw] flex-col gap-2 lg:h-[70vh] lg:w-[50vw] 2xl:h-[85vh] 2xl:w-[35vw]">
             <button
               onClick={closeMergedPreview}
               className="absolute -top-1 -right-1 cursor-pointer rounded-full bg-neutral-400 shadow shadow-black/50 hover:bg-red-600"
