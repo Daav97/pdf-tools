@@ -1,6 +1,5 @@
 import FileIcon from './svg/FileIcon';
-import LeftIcon from './svg/LeftIcon';
-import RightIcon from './svg/RightIcon';
+import ArrowIcon from './svg/ArrowIcon';
 import CrossIcon from './svg/CrossIcon';
 import { useEffect, useRef, useState } from 'react';
 import { validatePageSelection } from './MergePage/MergePageLogic';
@@ -62,7 +61,7 @@ const UploadedFileCard = ({
             }}
             className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600"
           >
-            <LeftIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
+            <ArrowIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
           </button>
           <button
             title="Mover a la derecha"
@@ -72,7 +71,7 @@ const UploadedFileCard = ({
             }}
             className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600 hover:text-white"
           >
-            <RightIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
+            <ArrowIcon className="h-5 w-5 rotate-180 text-neutral-700 hover:text-white" />
           </button>
         </div>
         <button
