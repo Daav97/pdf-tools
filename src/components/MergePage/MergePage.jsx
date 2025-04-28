@@ -16,7 +16,6 @@ import {
   closestCenter,
   DndContext,
   DragOverlay,
-  PointerSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -25,6 +24,7 @@ import {
   rectSortingStrategy,
   SortableContext,
 } from '@dnd-kit/sortable';
+import { CustomPointerSensor } from '../../lib/dnd-kit/CustomPointerSensor';
 
 const MergePage = () => {
   const EXTENSION = '.pdf';
@@ -38,7 +38,7 @@ const MergePage = () => {
   const [activeDrag, setActiveDrag] = useState(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(CustomPointerSensor, {
       activationConstraint: {
         distance: 10,
       },
