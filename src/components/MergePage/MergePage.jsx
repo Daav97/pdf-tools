@@ -12,6 +12,19 @@ import Modal from '../Modal';
 import CrossIcon from '../svg/CrossIcon';
 import TrashIcon from '../svg/TrashIcon';
 import Toast from '../Toast';
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+} from '@dnd-kit/sortable';
 
 const MergePage = () => {
   const EXTENSION = '.pdf';
@@ -22,6 +35,15 @@ const MergePage = () => {
   const [mergedFileName, setMergedFileName] = useState('');
   const [isDraggingFiles, setIsDraggingFiles] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [activeDrag, setActiveDrag] = useState(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+  );
 
   const uploadButton = useRef(null);
 
@@ -200,6 +222,22 @@ const MergePage = () => {
     return convertedFiles;
   };
 
+  const handleDragStart = (event) => {
+    const pdfFound = pdfFiles.find((file) => file.id === event.active.id);
+    setActiveDrag(pdfFound);
+  };
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      const oldIndex = pdfFiles.findIndex((file) => file.id === active.id);
+      const newIndex = pdfFiles.findIndex((file) => file.id === over.id);
+      const newOrderArray = arrayMove(pdfFiles, oldIndex, newIndex);
+      setPdfFiles(newOrderArray);
+    }
+    setActiveDrag(null);
+  };
+
   return (
     <div className="flex h-full flex-col bg-neutral-50">
       <div className="flex justify-between px-2 pb-1">
@@ -252,25 +290,42 @@ const MergePage = () => {
             </p>
           </div>
         )}
-        {pdfFiles.length > 0 && (
-          <>
-            {pdfFiles.map((file, index) => (
-              <UploadedFileCard
-                index={index}
-                originalFile={file.originalFile}
-                key={file.id}
-                deleteFileCallback={() => handleDeleteFile(index)}
-                moveDownFileCallback={() => handleMoveDownFile(index)}
-                moveUpFileCallback={() => handleMoveUpFile(index)}
-                openPreviewCallback={() => handlePreview(file.originalFile)}
-                pageCount={file.pdfDocument.getPageCount()}
-                pageSelection={file.pageSelection}
-                onPageSelectionCallback={handleUpdatePageSelection}
-                className={isDraggingFiles ? 'pointer-events-none' : ''}
-              />
-            ))}
-          </>
-        )}
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCenter}
+        >
+          <SortableContext items={pdfFiles} strategy={rectSortingStrategy}>
+            {pdfFiles.length > 0 && (
+              <>
+                {pdfFiles.map((file, index) => (
+                  <UploadedFileCard
+                    index={index}
+                    originalFile={file.originalFile}
+                    key={file.id}
+                    id={file.id}
+                    deleteFileCallback={() => handleDeleteFile(index)}
+                    moveDownFileCallback={() => handleMoveDownFile(index)}
+                    moveUpFileCallback={() => handleMoveUpFile(index)}
+                    openPreviewCallback={() => handlePreview(file.originalFile)}
+                    pageCount={file.pdfDocument.getPageCount()}
+                    pageSelection={file.pageSelection}
+                    onPageSelectionCallback={handleUpdatePageSelection}
+                    className={isDraggingFiles ? 'pointer-events-none' : ''}
+                  />
+                ))}
+              </>
+            )}
+          </SortableContext>
+          <DragOverlay>
+            {activeDrag ? (
+              <div className="h-[290px] w-48 rounded-2xl bg-neutral-400">
+                {activeDrag.originalFile.name}
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
       </ul>
       <div className="flex min-h-4 items-center justify-center">
         <button

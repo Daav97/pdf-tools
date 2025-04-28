@@ -3,9 +3,12 @@ import ArrowIcon from './svg/ArrowIcon';
 import CrossIcon from './svg/CrossIcon';
 import { useEffect, useRef, useState } from 'react';
 import { validatePageSelection } from './MergePage/MergePageLogic';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const UploadedFileCard = ({
   index,
+  id,
   originalFile,
   deleteFileCallback,
   moveDownFileCallback,
@@ -19,6 +22,9 @@ const UploadedFileCard = ({
   const [selectionMode, setSelectionMode] = useState('all');
   const [errorPageSelection, setErrorPageSelection] = useState(null);
   const selectionInputRef = useRef(null);
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   useEffect(() => {
     const error = validatePageSelection(pageSelection, pageCount);
@@ -46,10 +52,18 @@ const UploadedFileCard = ({
     onPageSelectionCallback(index, '');
   };
 
+  const dndStyles = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <li
-      className={`flex h-[290px] w-48 cursor-pointer flex-col rounded-2xl bg-white shadow-md transition hover:scale-105 ${className}`}
-      onClick={() => openPreviewCallback(originalFile)}
+      ref={setNodeRef}
+      style={dndStyles}
+      className={`flex h-[290px] w-48 cursor-grab flex-col rounded-2xl bg-white shadow-md transition ${className}`}
+      {...attributes}
+      {...listeners}
     >
       <div className="flex h-10 items-center justify-between px-3">
         <div className="flex gap-2">
@@ -95,11 +109,16 @@ const UploadedFileCard = ({
         >
           {originalFile.name}
         </p>
-        <FileIcon className="h-28 text-neutral-700" />
+        <div
+          className="cursor-pointer"
+          onClick={() => openPreviewCallback(originalFile)}
+        >
+          <FileIcon className="h-28 text-neutral-700" />
+        </div>
         <p className="text-sm text-black/60 select-none">{`${pageCount} ${pageCount === 1 ? 'página' : 'páginas'}`}</p>
       </div>
       <div
-        className="flex h-16 cursor-default flex-col items-center justify-center gap-2 px-3 pb-2"
+        className="flex h-16 flex-col items-center justify-center gap-2 px-3 pb-2"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex gap-2">
