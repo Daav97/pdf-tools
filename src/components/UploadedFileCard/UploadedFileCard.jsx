@@ -1,8 +1,8 @@
-import FileIcon from './svg/FileIcon';
-import ArrowIcon from './svg/ArrowIcon';
-import CrossIcon from './svg/CrossIcon';
+import FileIcon from '../svg/FileIcon';
+import ArrowIcon from '../svg/ArrowIcon';
+import CrossIcon from '../svg/CrossIcon';
 import { useEffect, useRef, useState } from 'react';
-import { validatePageSelection } from './MergePage/MergePageLogic';
+import { validatePageSelection } from '../MergePage/MergePageLogic';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
