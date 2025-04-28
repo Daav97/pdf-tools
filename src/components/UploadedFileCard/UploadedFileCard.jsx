@@ -1,9 +1,9 @@
-import FileIcon from '../svg/FileIcon';
 import { useEffect, useRef, useState } from 'react';
 import { validatePageSelection } from '../MergePage/MergePageLogic';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CardActions from './CardActions';
+import FilePreview from './FilePreview';
 
 const UploadedFileCard = ({
   index,
@@ -69,24 +69,12 @@ const UploadedFileCard = ({
         moveUpFileCallback={moveUpFileCallback}
         deleteFileCallback={deleteFileCallback}
       />
-      <div className="relative flex flex-1 flex-col items-center justify-center px-3 pt-4">
-        <p className="absolute top-0 left-0 ml-[13.5px] text-sm font-light text-black/70 select-none">
-          {`#${index + 1}`}
-        </p>
-        <p
-          title={originalFile.name}
-          className="w-full justify-center overflow-hidden text-center font-medium text-ellipsis select-none"
-        >
-          {originalFile.name}
-        </p>
-        <div
-          className="cursor-pointer"
-          onClick={() => openPreviewCallback(originalFile)}
-        >
-          <FileIcon className="h-28 text-neutral-700" />
-        </div>
-        <p className="text-sm text-black/60 select-none">{`${pageCount} ${pageCount === 1 ? 'página' : 'páginas'}`}</p>
-      </div>
+      <FilePreview
+        file={originalFile}
+        index={index}
+        onOpenPreview={openPreviewCallback}
+        pageCount={pageCount}
+      />
       <div
         className="flex h-16 flex-col items-center justify-center gap-2 px-3 pb-2"
         onClick={(e) => e.stopPropagation()}
