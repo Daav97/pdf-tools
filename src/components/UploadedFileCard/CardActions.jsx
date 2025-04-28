@@ -6,14 +6,24 @@ const CardActions = ({
   moveDownFileCallback,
   deleteFileCallback,
 }) => {
+  /**
+   * Handles a button click by preventing the event from propagating
+   * and then executing the provided callback function.
+   * @param {React.MouseEvent} e - The click event.
+   * @param {Function} callback - The callback function to execute after stopping propagation.
+   */
+  const handleButtonClick = (e, callback) => {
+    e.stopPropagation();
+    callback();
+  };
+
   return (
     <div className="flex h-10 items-center justify-between px-3">
       <div className="flex gap-2">
         <button
           title="Mover a la izquierda"
           onClick={(e) => {
-            e.stopPropagation();
-            moveUpFileCallback();
+            handleButtonClick(e, moveUpFileCallback);
           }}
           className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600"
         >
@@ -22,8 +32,7 @@ const CardActions = ({
         <button
           title="Mover a la derecha"
           onClick={(e) => {
-            e.stopPropagation();
-            moveDownFileCallback();
+            handleButtonClick(e, moveDownFileCallback);
           }}
           className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600 hover:text-white"
         >
@@ -33,8 +42,7 @@ const CardActions = ({
       <button
         title="Eliminar archivo"
         onClick={(e) => {
-          e.stopPropagation();
-          deleteFileCallback();
+          handleButtonClick(e, deleteFileCallback);
         }}
         className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600"
       >
