@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import UploadButton from '../UploadButton';
-import UploadedFileCard from '../UploadedFileCard';
+import { UploadedFileCard } from '../UploadedFileCard';
 import {
   joinFilesNames,
   processUploadedPdfFiles,

@@ -1,10 +1,9 @@
 import FileIcon from '../svg/FileIcon';
-import ArrowIcon from '../svg/ArrowIcon';
-import CrossIcon from '../svg/CrossIcon';
 import { useEffect, useRef, useState } from 'react';
 import { validatePageSelection } from '../MergePage/MergePageLogic';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import CardActions from './CardActions';
 
 const UploadedFileCard = ({
   index,
@@ -65,40 +64,11 @@ const UploadedFileCard = ({
       {...attributes}
       {...listeners}
     >
-      <div className="flex h-10 items-center justify-between px-3">
-        <div className="flex gap-2">
-          <button
-            title="Mover a la izquierda"
-            onClick={(e) => {
-              e.stopPropagation();
-              moveUpFileCallback();
-            }}
-            className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600"
-          >
-            <ArrowIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
-          </button>
-          <button
-            title="Mover a la derecha"
-            onClick={(e) => {
-              e.stopPropagation();
-              moveDownFileCallback();
-            }}
-            className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-600 hover:text-white"
-          >
-            <ArrowIcon className="h-5 w-5 rotate-180 text-neutral-700 hover:text-white" />
-          </button>
-        </div>
-        <button
-          title="Eliminar archivo"
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteFileCallback();
-          }}
-          className="flex cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600"
-        >
-          <CrossIcon className="h-5 w-5 text-neutral-700 hover:text-white" />
-        </button>
-      </div>
+      <CardActions
+        moveDownFileCallback={moveDownFileCallback}
+        moveUpFileCallback={moveUpFileCallback}
+        deleteFileCallback={deleteFileCallback}
+      />
       <div className="relative flex flex-1 flex-col items-center justify-center px-3 pt-4">
         <p className="absolute top-0 left-0 ml-[13.5px] text-sm font-light text-black/70 select-none">
           {`#${index + 1}`}
