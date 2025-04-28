@@ -57,17 +57,18 @@ const PageSelectionControl = ({
             <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-red-500"></div>
           </div>
         )}
-        <input
-          ref={selectionInputRef}
-          type="text"
-          className={`w-36 rounded border pl-1 text-sm text-black/70 focus:outline-sky-300/50 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
-          hidden={selectionMode === 'all'}
-          placeholder="p. ej. 1-5, 8, 11-13"
-          title="Ingresa las páginas o los rangos a utilizar"
-          value={pageSelection}
-          onChange={(e) => onPageSelectionCallback(index, e.target.value)}
-          onBlur={handleOnBlurPageSelection}
-        />
+        {selectionMode === 'custom' && (
+          <input
+            ref={selectionInputRef}
+            type="text"
+            className={`w-36 rounded border pl-1 text-sm text-black/70 focus:outline-sky-300/50 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
+            placeholder="p. ej. 1-5, 8, 11-13"
+            title="Ingresa las páginas o los rangos a utilizar"
+            value={pageSelection}
+            onChange={(e) => onPageSelectionCallback(index, e.target.value)}
+            onBlur={handleOnBlurPageSelection}
+          />
+        )}
       </div>
     </div>
   );
