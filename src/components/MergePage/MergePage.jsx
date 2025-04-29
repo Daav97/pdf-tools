@@ -320,9 +320,14 @@ const MergePage = () => {
           </SortableContext>
           <DragOverlay>
             {activeDrag ? (
-              <div className="h-[290px] w-48 rounded-2xl bg-neutral-400">
-                {activeDrag.originalFile.name}
-              </div>
+              <UploadedFileCard
+                index={pdfFiles.findIndex((file) => file.id === activeDrag.id)}
+                originalFile={activeDrag.originalFile}
+                id={activeDrag.id}
+                pageCount={activeDrag.pdfDocument.getPageCount()}
+                pageSelection={activeDrag.pageSelection}
+                className={isDraggingFiles ? 'pointer-events-none' : ''}
+              />
             ) : null}
           </DragOverlay>
         </DndContext>
