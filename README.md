@@ -8,3 +8,4 @@ Web application that allows interaction with PDF functionalities.
 - Vite
 - pdf-lib
 - tailwind
+- dnd-kit
