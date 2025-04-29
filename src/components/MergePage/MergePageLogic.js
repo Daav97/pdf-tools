@@ -86,7 +86,7 @@ const DEFAULT_PAGE_SELECTION = {
  *   - `id`: A unique identifier based on timestamp and file name.
  *   - `originalFile`: The original uploaded file.
  *   - `pdfDocument`: The parsed PDF document.
- *   - `pageSelection`: An initially empty string for page selection.
+ *   - `pageSelection`: A object containing the page selection mode and a value with an initially empty string for page selection.
  */
 export const processUploadedPdfFiles = async (files) => {
   const results = await Promise.allSettled(

@@ -84,9 +84,9 @@ const MergePage = () => {
     for (const pdfFile of pdfFiles) {
       let pagesToUse = [];
 
-      if (pdfFile.pageSelection) {
+      if (pdfFile.pageSelection.value) {
         pagesToUse = parsePageSelection(
-          pdfFile.pageSelection,
+          pdfFile.pageSelection.value,
           pdfFile.pdfDocument.getPageCount(),
         );
       }
