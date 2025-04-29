@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { validatePageSelection } from '../MergePage/MergePageLogic';
+
+const DEFAULT_SELECTION_VALUE_ON_BLUR = '1';
 
 const PageSelectionControl = ({
   index,
@@ -8,25 +10,34 @@ const PageSelectionControl = ({
   onPageSelectionCallback,
 }) => {
   const selectionInputRef = useRef(null);
-  const errorPageSelection = validatePageSelection(pageSelection, pageCount);
-
-  const [selectionMode, setSelectionMode] = useState('all');
+  const errorPageSelection = validatePageSelection(
+    pageSelection.value,
+    pageCount,
+  );
 
   useEffect(() => {
-    if (selectionMode === 'custom') {
+    if (pageSelection.mode === 'custom') {
       selectionInputRef.current.focus();
     }
-  }, [selectionMode]);
+  }, [pageSelection.mode]);
 
   const handleSelectionModeChange = (e) => {
-    setSelectionMode(e.target.value);
-    onPageSelectionCallback(index, '');
+    // When the selection mode changes its value, notify the parent component by calling the callback function, sending the new mode an reseting the value.
+    onPageSelectionCallback(index, { mode: e.target.value, value: '' });
   };
 
   const handleOnBlurPageSelection = (e) => {
+    //If the value is empty when the input lost focus, a default value is asigned
     if (e.target.value === '') {
-      onPageSelectionCallback(index, '1');
+      onPageSelectionCallback(index, {
+        ...pageSelection,
+        value: DEFAULT_SELECTION_VALUE_ON_BLUR,
+      });
     }
+  };
+
+  const handleSelectionChange = (e) => {
+    onPageSelectionCallback(index, { ...pageSelection, value: e.target.value });
   };
 
   return (
@@ -44,7 +55,7 @@ const PageSelectionControl = ({
         <select
           className="rounded border border-neutral-200 bg-neutral-100 text-sm text-black/70 select-none focus:outline-sky-300/50"
           onChange={handleSelectionModeChange}
-          value={selectionMode}
+          value={pageSelection.mode}
         >
           <option value="all">Todas</option>
           <option value="custom">Selección</option>
@@ -57,15 +68,15 @@ const PageSelectionControl = ({
             <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-red-500"></div>
           </div>
         )}
-        {selectionMode === 'custom' && (
+        {pageSelection.mode === 'custom' && (
           <input
             ref={selectionInputRef}
             type="text"
             className={`w-36 rounded border pl-1 text-sm text-black/70 focus:outline-sky-300/50 ${errorPageSelection ? 'border-red-300 bg-red-100 text-red-700 focus:outline-none' : 'border-neutral-200 bg-neutral-100'}`}
             placeholder="p. ej. 1-5, 8, 11-13"
             title="Ingresa las páginas o los rangos a utilizar"
-            value={pageSelection}
-            onChange={(e) => onPageSelectionCallback(index, e.target.value)}
+            value={pageSelection.value}
+            onChange={handleSelectionChange}
             onBlur={handleOnBlurPageSelection}
           />
         )}

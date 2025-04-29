@@ -58,15 +58,15 @@ const MergePage = () => {
     }
   };
 
-  const handleUpdatePageSelection = (index, newValue) => {
+  const handleUpdatePageSelection = (index, newPageSelection) => {
     const regex = /^[\d,\s-]*$/;
-    if (!regex.test(newValue)) {
+    if (!regex.test(newPageSelection.value)) {
       return;
     }
 
     setPdfFiles((prev) =>
       prev.map((file, i) =>
-        i === index ? { ...file, pageSelection: newValue } : file,
+        i === index ? { ...file, pageSelection: newPageSelection } : file,
       ),
     );
   };

@@ -66,6 +66,11 @@ export const joinFilesNames = (files) => {
     .join('_');
 };
 
+const DEFAULT_PAGE_SELECTION = {
+  mode: 'All',
+  value: '',
+};
+
 /**
  * Processes a list of files and attempts to convert valid PDF files
  * into structured internal objects, separating successful and failed ones.
@@ -93,7 +98,7 @@ export const processUploadedPdfFiles = async (files) => {
           id,
           originalFile: file,
           pdfDocument: pdfDoc,
-          pageSelection: '',
+          pageSelection: DEFAULT_PAGE_SELECTION,
         };
       } catch (error) {
         throw { error, file };
