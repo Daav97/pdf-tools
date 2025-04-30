@@ -26,6 +26,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CustomPointerSensor } from '../../lib/dnd-kit/CustomPointerSensor';
 import Sortable from '../../lib/dnd-kit/Sortable';
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MergePage = () => {
   const EXTENSION = '.pdf';
@@ -298,28 +300,35 @@ const MergePage = () => {
           collisionDetection={closestCenter}
         >
           <SortableContext items={pdfFiles} strategy={rectSortingStrategy}>
-            {pdfFiles.length > 0 && (
-              <>
-                {pdfFiles.map((file, index) => (
+            <AnimatePresence>
+              {pdfFiles.length > 0 &&
+                pdfFiles.map((file, index) => (
                   <Sortable id={file.id} key={file.id}>
-                    <UploadedFileCard
-                      index={index}
-                      originalFile={file.originalFile}
-                      deleteFileCallback={() => handleDeleteFile(index)}
-                      moveDownFileCallback={() => handleMoveDownFile(index)}
-                      moveUpFileCallback={() => handleMoveUpFile(index)}
-                      openPreviewCallback={() =>
-                        handlePreview(file.originalFile)
-                      }
-                      pageCount={file.pdfDocument.getPageCount()}
-                      pageSelection={file.pageSelection}
-                      onPageSelectionCallback={handleUpdatePageSelection}
-                      className={isDraggingFiles ? 'pointer-events-none' : ''}
-                    />
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <UploadedFileCard
+                        index={index}
+                        originalFile={file.originalFile}
+                        deleteFileCallback={() => handleDeleteFile(index)}
+                        moveDownFileCallback={() => handleMoveDownFile(index)}
+                        moveUpFileCallback={() => handleMoveUpFile(index)}
+                        openPreviewCallback={() =>
+                          handlePreview(file.originalFile)
+                        }
+                        pageCount={file.pdfDocument.getPageCount()}
+                        pageSelection={file.pageSelection}
+                        onPageSelectionCallback={handleUpdatePageSelection}
+                        className={isDraggingFiles ? 'pointer-events-none' : ''}
+                      />
+                    </motion.div>
                   </Sortable>
                 ))}
-              </>
-            )}
+            </AnimatePresence>
           </SortableContext>
           <DragOverlay>
             {activeDrag ? (

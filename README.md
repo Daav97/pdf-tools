@@ -9,3 +9,4 @@ Web application that allows interaction with PDF functionalities.
 - pdf-lib
 - tailwind
 - dnd-kit
+- framer-motion
