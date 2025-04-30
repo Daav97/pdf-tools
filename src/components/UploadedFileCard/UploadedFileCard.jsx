@@ -1,12 +1,9 @@
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import CardActions from './CardActions';
 import FilePreview from './FilePreview';
 import PageSelectionControl from './PageSelectionControl';
 
 const UploadedFileCard = ({
   index,
-  id,
   originalFile,
   deleteFileCallback,
   moveDownFileCallback,
@@ -17,29 +14,9 @@ const UploadedFileCard = ({
   pageCount,
   className,
 }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
-
-  const dndStyles = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-    touchAction: 'none',
-  };
-
   return (
     <li
-      ref={setNodeRef}
-      style={dndStyles}
       className={`flex h-[290px] w-48 cursor-grab flex-col rounded-2xl bg-white shadow-md transition ${className}`}
-      {...attributes}
-      {...listeners}
     >
       <CardActions
         moveDownFileCallback={moveDownFileCallback}

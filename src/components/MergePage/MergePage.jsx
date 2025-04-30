@@ -25,6 +25,7 @@ import {
   SortableContext,
 } from '@dnd-kit/sortable';
 import { CustomPointerSensor } from '../../lib/dnd-kit/CustomPointerSensor';
+import Sortable from '../../lib/dnd-kit/Sortable';
 
 const MergePage = () => {
   const EXTENSION = '.pdf';
@@ -300,20 +301,22 @@ const MergePage = () => {
             {pdfFiles.length > 0 && (
               <>
                 {pdfFiles.map((file, index) => (
-                  <UploadedFileCard
-                    index={index}
-                    originalFile={file.originalFile}
-                    key={file.id}
-                    id={file.id}
-                    deleteFileCallback={() => handleDeleteFile(index)}
-                    moveDownFileCallback={() => handleMoveDownFile(index)}
-                    moveUpFileCallback={() => handleMoveUpFile(index)}
-                    openPreviewCallback={() => handlePreview(file.originalFile)}
-                    pageCount={file.pdfDocument.getPageCount()}
-                    pageSelection={file.pageSelection}
-                    onPageSelectionCallback={handleUpdatePageSelection}
-                    className={isDraggingFiles ? 'pointer-events-none' : ''}
-                  />
+                  <Sortable id={file.id} key={file.id}>
+                    <UploadedFileCard
+                      index={index}
+                      originalFile={file.originalFile}
+                      deleteFileCallback={() => handleDeleteFile(index)}
+                      moveDownFileCallback={() => handleMoveDownFile(index)}
+                      moveUpFileCallback={() => handleMoveUpFile(index)}
+                      openPreviewCallback={() =>
+                        handlePreview(file.originalFile)
+                      }
+                      pageCount={file.pdfDocument.getPageCount()}
+                      pageSelection={file.pageSelection}
+                      onPageSelectionCallback={handleUpdatePageSelection}
+                      className={isDraggingFiles ? 'pointer-events-none' : ''}
+                    />
+                  </Sortable>
                 ))}
               </>
             )}
@@ -323,7 +326,6 @@ const MergePage = () => {
               <UploadedFileCard
                 index={pdfFiles.findIndex((file) => file.id === activeDrag.id)}
                 originalFile={activeDrag.originalFile}
-                id={activeDrag.id}
                 pageCount={activeDrag.pdfDocument.getPageCount()}
                 pageSelection={activeDrag.pageSelection}
                 className={isDraggingFiles ? 'pointer-events-none' : ''}
