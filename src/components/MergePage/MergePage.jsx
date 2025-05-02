@@ -281,7 +281,10 @@ const MergePage = () => {
           </div>
         )}
         {!isDraggingFiles && (
-          <div hidden={pdfFiles.length > 0}>
+          <div
+            hidden={pdfFiles.length > 0}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+          >
             <UploadButton
               text={'Subir archivos'}
               onUploadCallback={handleFileUpload}
