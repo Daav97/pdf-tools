@@ -242,14 +242,17 @@ const MergePage = () => {
   };
 
   return (
-    <div className="flex h-full flex-col bg-neutral-50">
-      <div className="flex justify-between px-2 pb-1">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-neutral-50">
+      <div className="flex w-full justify-between px-2 pb-1">
         <p
           className={`flex h-16 items-end font-semibold ${pdfFiles.length <= 0 && 'invisible'}`}
         >
           {`Archivos seleccionados (${pdfFiles.length}):`}
         </p>
-        <div className="flex items-end gap-4" hidden={pdfFiles.length <= 0}>
+        <div
+          className="flex flex-wrap items-end gap-4"
+          hidden={pdfFiles.length <= 0}
+        >
           <button
             title="Añadir archivo"
             className="group mb-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-200 hover:bg-red-600 active:bg-red-700"
@@ -391,7 +394,7 @@ const MergePage = () => {
             >
               <CrossIcon className="h-6 w-6 text-neutral-100" />
             </button>
-            <div className="flex max-w-3/4 items-center self-center">
+            <div className="flex max-w-1/2 items-center self-center sm:max-w-3/4">
               <div className="relative w-full">
                 <span
                   className="pointer-events-none invisible inline-block px-2 font-semibold whitespace-pre"
