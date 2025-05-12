@@ -242,7 +242,7 @@ const MergePage = () => {
   };
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-neutral-50">
+    <div className="flex w-full flex-1 flex-col overflow-hidden bg-neutral-50">
       <div className="flex w-full justify-between px-2 pb-1">
         <p
           className={`flex h-16 items-end font-semibold ${pdfFiles.length <= 0 && 'invisible'}`}
