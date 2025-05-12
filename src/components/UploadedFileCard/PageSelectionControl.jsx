@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { validatePageSelection } from '../MergePage/MergePageLogic';
+import { validatePageSelection } from '../../utils/FilesLogic';
 
 const DEFAULT_SELECTION_VALUE_ON_BLUR = '1';
 

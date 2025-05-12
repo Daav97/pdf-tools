@@ -7,7 +7,7 @@ import {
   processUploadedPdfFiles,
   parsePageSelection,
   validatePDFFiles,
-} from './MergePageLogic';
+} from '../../utils/FilesLogic';
 import Modal from '../Modal';
 import CrossIcon from '../svg/CrossIcon';
 import TrashIcon from '../svg/TrashIcon';
