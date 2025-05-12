@@ -4,9 +4,8 @@ import UploadButton from '../UploadButton';
 import { UploadedFileCard } from '../UploadedFileCard';
 import {
   joinFilesNames,
-  processUploadedPdfFiles,
   parsePageSelection,
-  validatePDFFiles,
+  validateAndConvertFiles,
 } from '../../utils/FilesLogic';
 import Modal from '../Modal';
 import CrossIcon from '../svg/CrossIcon';
@@ -54,7 +53,12 @@ const MergePage = () => {
     const incomingFiles = Array.from(event.target.files);
 
     if (incomingFiles.length > 0) {
-      const convertedFiles = await validateAndConvertFiles(incomingFiles);
+      const { convertedFiles, errorMessage } =
+        await validateAndConvertFiles(incomingFiles);
+
+      if (errorMessage) {
+        setToastMessage(errorMessage);
+      }
 
       setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
       event.target.value = null;
@@ -182,7 +186,12 @@ const MergePage = () => {
     setIsDraggingFiles(false);
 
     const incomingFiles = Array.from(e.dataTransfer.files);
-    const convertedFiles = await validateAndConvertFiles(incomingFiles);
+    const { convertedFiles, errorMessage } =
+      await validateAndConvertFiles(incomingFiles);
+
+    if (errorMessage) {
+      setToastMessage(errorMessage);
+    }
 
     setPdfFiles((prevFiles) => [...prevFiles, ...convertedFiles]);
   };
@@ -195,34 +204,6 @@ const MergePage = () => {
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDraggingFiles(false);
-  };
-
-  const validateAndConvertFiles = async (files) => {
-    const [validPDFFiles, invalidFiles] = validatePDFFiles(files);
-    let errorMessage = '';
-
-    if (invalidFiles.length > 0) {
-      errorMessage += `
-      Los siguientes archivos no son archivos PDF válidos: ${invalidFiles.join(', ')}
-      . `;
-    }
-
-    const [convertedFiles, failedFiles, encryptedFiles] =
-      await processUploadedPdfFiles(validPDFFiles);
-
-    if (encryptedFiles.length > 0) {
-      errorMessage += `Los siguientes archivos tienen contraseña: ${encryptedFiles.join(', ')}. `;
-    }
-
-    if (failedFiles.length > 0) {
-      errorMessage += `No fue posible procesar los archivos: ${failedFiles.join(', ')}. `;
-    }
-
-    if (errorMessage) {
-      setToastMessage(errorMessage);
-    }
-
-    return convertedFiles;
   };
 
   const handleDragStart = (event) => {
