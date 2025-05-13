@@ -21,7 +21,7 @@ const SplitPage = () => {
       const file = convertedFiles[0];
       const url = URL.createObjectURL(file.originalFile);
 
-      setPdfFile({ file, url });
+      setPdfFile({ ...file, url });
       event.target.value = null;
     }
   };
@@ -61,7 +61,7 @@ const SplitPage = () => {
     const file = convertedFiles[0];
     const url = URL.createObjectURL(file.originalFile);
 
-    setPdfFile({ file, url });
+    setPdfFile({ ...file, url });
   };
 
   return (
