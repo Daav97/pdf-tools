@@ -359,7 +359,7 @@ const MergePage = () => {
             <iframe
               src={previewFile.url}
               className="h-[70vh] w-[80vw] rounded border-y border-neutral-200 lg:h-[70vh] lg:w-[50vw] 2xl:h-[85vh] 2xl:w-[35vw]"
-            ></iframe>
+            />
             <br />
           </div>
         </Modal>
@@ -394,7 +394,7 @@ const MergePage = () => {
             <iframe
               src={mergedPdfUrl}
               className="h-full w-full rounded border-y border-neutral-200"
-            ></iframe>
+            />
             <a
               href={mergedPdfUrl}
               download={mergedFileName + EXTENSION}

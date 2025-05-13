@@ -6,7 +6,7 @@ const Body = ({ showFilePreview, file }) => {
     <div className="flex flex-1 items-center justify-center">
       <div className="h-[95%] w-[60%] overflow-hidden rounded-md shadow-md">
         {showFilePreview ? (
-          <iframe src={file.url} className="h-full w-full"></iframe>
+          <iframe src={file.url} className="h-full w-full" />
         ) : (
           <FileCover
             fileName={file.originalFile.name}
