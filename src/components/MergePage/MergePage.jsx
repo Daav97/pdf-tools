@@ -257,14 +257,13 @@ const MergePage = () => {
         onDragLeave={handleDragLeave}
         className={`relative flex flex-1 flex-wrap justify-center gap-8 overflow-auto border border-neutral-300 bg-neutral-200 p-5 ${pdfFiles.length <= 0 && 'items-center'}`}
       >
-        {isDraggingFiles && (
+        {isDraggingFiles ? (
           <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center border-2 border-neutral-500 bg-black/70">
             <p className="text-lg font-semibold text-white">
               ¡Suelta el archivo aquí!
             </p>
           </div>
-        )}
-        {!isDraggingFiles && (
+        ) : (
           <div
             hidden={pdfFiles.length > 0}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
