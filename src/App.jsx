@@ -5,7 +5,7 @@ import ToggleSwitch from './components/ToggleSwitch/ToggleSwitch';
 import SplitPage from './components/SplitPage/SplitPage';
 
 function App() {
-  const [isMergeMode, setIsMergeMode] = useState(true);
+  const [isMergeMode, setIsMergeMode] = useState(false);
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden bg-neutral-50">
@@ -19,7 +19,7 @@ function App() {
           />
         </div>
         <div className="flex flex-1 justify-center">
-          <span className="text-center text-nowrap text-red-700 text-shadow-sm sm:text-xl md:text-2xl lg:text-3xl">
+          <span className="text-center text-lg font-extralight text-nowrap text-red-700 text-shadow-md sm:text-2xl md:text-3xl lg:text-4xl">
             {isMergeMode ? 'UNIR ARCHIVOS PDF' : 'SEPARAR ARCHIVOS PDF'}
           </span>
         </div>
