@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import MergePage from './components/MergePage/MergePage';
 import ToggleSwitch from './components/ToggleSwitch/ToggleSwitch';
+import SplitPage from './components/SplitPage/SplitPage';
 
 function App() {
   const [isMergeMode, setIsMergeMode] = useState(true);
@@ -26,12 +27,12 @@ function App() {
           <p>Config</p>
         </div>
       </div>
-      <p className="hidden px-2 pt-2 text-center text-lg font-light sm:block">
+      <p className="hidden p-2 text-center text-lg font-light sm:block">
         {isMergeMode
           ? 'Sube los archivos a unir, elige un orden adecuado y configura la selección de páginas de cada archivo si es necesario.'
           : 'Sube el archivo a separar.'}
       </p>
-      {isMergeMode ? <MergePage /> : <div>...</div>}
+      {isMergeMode ? <MergePage /> : <SplitPage />}
     </div>
   );
 }
