@@ -8,17 +8,20 @@ const Toolbar = ({ onFileDisplayButton }) => {
   return (
     <div className="flex w-18 flex-col items-center justify-between bg-neutral-400 py-4">
       <div className="flex flex-col gap-4">
-        <ToolbarButton onClick={onFileDisplayButton}>
+        <ToolbarButton
+          title="Mostrar/Ocultar previsualización"
+          onClick={onFileDisplayButton}
+        >
           <ClosedEye className="h-8 w-8" />
         </ToolbarButton>
 
-        <ToolbarButton>
+        <ToolbarButton title="Expandir previsualización">
           <ExpandIcon className="h-7 w-7" />
         </ToolbarButton>
       </div>
 
       <div className="flex flex-col gap-4">
-        <ToolbarButton>
+        <ToolbarButton title="Reemplazar archivo">
           <label htmlFor="inputFileButton" className="cursor-pointer">
             <SwapIcon className="h-7 w-7" />
           </label>
@@ -30,7 +33,7 @@ const Toolbar = ({ onFileDisplayButton }) => {
             multiple={false}
           />
         </ToolbarButton>
-        <ToolbarButton>
+        <ToolbarButton title="Cerrar archivo">
           <CrossIcon className="h-9 w-9" />
         </ToolbarButton>
       </div>
