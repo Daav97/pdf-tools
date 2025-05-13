@@ -5,13 +5,17 @@ import OpenedEye from '../../../svg/Openedeye';
 import SwapIcon from '../../../svg/SwapIcon';
 import ToolbarButton from './ToolbarButton';
 
-const Toolbar = ({ onFileDisplayButton, showFilePreview }) => {
+const Toolbar = ({
+  onFileDisplayButtonClick,
+  showFilePreview,
+  onExpandButtonClick,
+}) => {
   return (
     <div className="flex w-18 flex-col items-center justify-between bg-neutral-400 py-4">
       <div className="flex flex-col gap-4">
         <ToolbarButton
           title="Mostrar/Ocultar previsualización"
-          onClick={onFileDisplayButton}
+          onClick={onFileDisplayButtonClick}
         >
           {showFilePreview ? (
             <ClosedEye className="h-8 w-8" />
@@ -20,7 +24,10 @@ const Toolbar = ({ onFileDisplayButton, showFilePreview }) => {
           )}
         </ToolbarButton>
 
-        <ToolbarButton title="Expandir previsualización">
+        <ToolbarButton
+          title="Expandir previsualización"
+          onClick={onExpandButtonClick}
+        >
           <ExpandIcon className="h-7 w-7" />
         </ToolbarButton>
       </div>
