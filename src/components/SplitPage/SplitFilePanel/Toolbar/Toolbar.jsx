@@ -9,6 +9,7 @@ const Toolbar = ({
   onFileDisplayButtonClick,
   showFilePreview,
   onExpandButtonClick,
+  clearPdfFileCallback,
 }) => {
   return (
     <div className="flex w-18 flex-col items-center justify-between bg-neutral-400 py-4">
@@ -45,7 +46,7 @@ const Toolbar = ({
             multiple={false}
           />
         </ToolbarButton>
-        <ToolbarButton title="Cerrar archivo">
+        <ToolbarButton title="Cerrar archivo" onClick={clearPdfFileCallback}>
           <CrossIcon className="h-9 w-9" />
         </ToolbarButton>
       </div>

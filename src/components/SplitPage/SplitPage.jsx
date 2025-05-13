@@ -64,6 +64,10 @@ const SplitPage = () => {
     setPdfFile({ ...file, url });
   };
 
+  const clearPdfFile = () => {
+    setPdfFile(null);
+  };
+
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden bg-neutral-50">
       {!pdfFile ? (
@@ -95,7 +99,7 @@ const SplitPage = () => {
         </div>
       ) : (
         <div className="flex flex-1 border border-neutral-300">
-          <SplitFilePanel file={pdfFile} />
+          <SplitFilePanel file={pdfFile} clearPdfFileCallback={clearPdfFile} />
           <SplitPartsPanel />
         </div>
       )}
