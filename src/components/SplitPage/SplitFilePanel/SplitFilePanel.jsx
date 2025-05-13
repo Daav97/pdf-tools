@@ -4,7 +4,11 @@ import Body from './Body/Body';
 import Modal from '../../Modal';
 import CrossIcon from '../../svg/CrossIcon';
 
-const SplitFilePanel = ({ file, clearPdfFileCallback }) => {
+const SplitFilePanel = ({
+  file,
+  clearPdfFileCallback,
+  replacePdfFileCallback,
+}) => {
   const [showFilePreview, setShowFilePreview] = useState(true);
   const [isFilePreviewExpanded, setIsFilePreviewExpanded] = useState(false);
 
@@ -28,6 +32,7 @@ const SplitFilePanel = ({ file, clearPdfFileCallback }) => {
           onFileDisplayButtonClick={handleFileDisplayButton}
           showFilePreview={showFilePreview}
           clearPdfFileCallback={clearPdfFileCallback}
+          replacePdfFileCallback={replacePdfFileCallback}
         />
         <Body showFilePreview={showFilePreview} file={file} />
       </div>

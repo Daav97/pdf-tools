@@ -10,6 +10,7 @@ const Toolbar = ({
   showFilePreview,
   onExpandButtonClick,
   clearPdfFileCallback,
+  replacePdfFileCallback,
 }) => {
   return (
     <div className="flex w-18 flex-col items-center justify-between bg-neutral-400 py-4">
@@ -43,6 +44,7 @@ const Toolbar = ({
             id="inputFileButton"
             className="hidden"
             accept="application/pdf"
+            onChange={replacePdfFileCallback}
             multiple={false}
           />
         </ToolbarButton>

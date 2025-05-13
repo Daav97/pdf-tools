@@ -8,6 +8,11 @@ const SplitPage = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [isDraggingFile, setIsDraggingFile] = useState(null);
 
+  const handleFileRepace = async (event) => {
+    clearPdfFile();
+    await handleFileUpload(event);
+  };
+
   const handleFileUpload = async (event) => {
     const incomingFile = Array.from(event.target.files);
     if (incomingFile.length === 1) {
@@ -99,7 +104,11 @@ const SplitPage = () => {
         </div>
       ) : (
         <div className="flex flex-1 border border-neutral-300">
-          <SplitFilePanel file={pdfFile} clearPdfFileCallback={clearPdfFile} />
+          <SplitFilePanel
+            file={pdfFile}
+            clearPdfFileCallback={clearPdfFile}
+            replacePdfFileCallback={handleFileRepace}
+          />
           <SplitPartsPanel />
         </div>
       )}
