@@ -1,7 +1,7 @@
 const Modal = ({ children, closeCallback }) => {
   return (
     <div
-      className="fixed top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/70"
+      className="fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-black/70"
       onClick={closeCallback}
     >
       <div
