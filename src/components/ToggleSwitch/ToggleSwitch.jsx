@@ -9,7 +9,7 @@ const ToggleSwitch = ({
 }) => {
   return (
     <div
-      className="relative flex h-12 w-36 cursor-pointer items-center rounded-full bg-gray-300 p-1"
+      className="relative flex h-12 w-36 cursor-pointer items-center rounded-full bg-gray-300 p-2"
       onClick={onToggle}
       role="switch"
     >
