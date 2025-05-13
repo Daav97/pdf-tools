@@ -3,10 +3,12 @@ import UploadButton from '../UploadButton';
 import { validateAndConvertFiles } from '../../utils/FilesLogic';
 import SplitFilePanel from './SplitFilePanel/SplitFilePanel';
 import SplitPartsPanel from './SplitPartsPanel/SplitPartsPanel';
+import Toast from '../Toast';
 
 const SplitPage = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [isDraggingFile, setIsDraggingFile] = useState(null);
+  const [toastMessage, setToastMessage] = useState('');
 
   const handleFileRepace = async (event) => {
     clearPdfFile();
@@ -20,7 +22,7 @@ const SplitPage = () => {
         await validateAndConvertFiles(incomingFile);
 
       if (errorMessage) {
-        //TODO: Set error message
+        setToastMessage(errorMessage);
       }
 
       const file = convertedFiles[0];
@@ -52,7 +54,7 @@ const SplitPage = () => {
     const incomingFiles = Array.from(e.dataTransfer.files);
 
     if (incomingFiles.length > 1) {
-      // setToastMessage('Solo se permite subir un archivo a la vez.');
+      setToastMessage('Solo se permite subir un archivo a la vez.');
       return;
     }
 
@@ -60,7 +62,7 @@ const SplitPage = () => {
       await validateAndConvertFiles(incomingFiles);
 
     if (errorMessage) {
-      // setToastMessage(errorMessage);
+      setToastMessage(errorMessage);
     }
 
     const file = convertedFiles[0];
@@ -113,6 +115,9 @@ const SplitPage = () => {
         </div>
       )}
       <div className="min-h-4"></div>
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
+      )}
     </div>
   );
 };
