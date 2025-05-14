@@ -1,7 +1,6 @@
 import FileCover from './FileCover';
 
 const Body = ({ showFilePreview, file }) => {
-  console.log(file);
   return (
     <div className="flex flex-1 items-center justify-center">
       <div className="h-[95%] w-[60%] overflow-hidden rounded-md shadow-md">
