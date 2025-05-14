@@ -30,7 +30,7 @@ function App() {
       <p className="hidden p-2 text-center text-lg font-light sm:block">
         {isMergeMode
           ? 'Sube los archivos a unir, elige un orden adecuado y configura la selección de páginas de cada archivo si es necesario.'
-          : 'Sube el archivo a separar.'}
+          : 'Sube el archivo a separar, crea las separaciones necesarias, descarga tus nuevos archivos.'}
       </p>
       {isMergeMode ? <MergePage /> : <SplitPage />}
     </div>

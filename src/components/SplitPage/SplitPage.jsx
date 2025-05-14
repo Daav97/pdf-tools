@@ -114,7 +114,6 @@ const SplitPage = () => {
           <SplitPartsPanel />
         </div>
       )}
-      <div className="min-h-4"></div>
       {toastMessage && (
         <Toast message={toastMessage} onClose={() => setToastMessage('')} />
       )}

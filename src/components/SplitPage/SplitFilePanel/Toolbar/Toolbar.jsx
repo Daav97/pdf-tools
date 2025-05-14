@@ -13,7 +13,7 @@ const Toolbar = ({
   replacePdfFileCallback,
 }) => {
   return (
-    <div className="flex w-18 flex-col items-center justify-between bg-neutral-400 py-4">
+    <div className="flex w-14 flex-col items-center justify-between bg-neutral-300 py-4">
       <div className="flex flex-col gap-4">
         <ToolbarButton
           title="Mostrar/Ocultar previsualización"

@@ -3,6 +3,7 @@ import Toolbar from './Toolbar/Toolbar';
 import Body from './Body/Body';
 import Modal from '../../Modal';
 import CrossIcon from '../../svg/CrossIcon';
+import Footer from './Footer/Footer';
 
 const SplitFilePanel = ({
   file,
@@ -25,7 +26,7 @@ const SplitFilePanel = ({
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col bg-neutral-200">
+    <div className="flex h-full flex-1 flex-col bg-neutral-400">
       <div className="flex flex-1">
         <Toolbar
           onExpandButtonClick={handleExpandButton}
@@ -36,8 +37,7 @@ const SplitFilePanel = ({
         />
         <Body showFilePreview={showFilePreview} file={file} />
       </div>
-      {/* Footer */}
-      <div className="h-20 bg-purple-100"></div>
+      <Footer />
       {isFilePreviewExpanded && (
         <Modal closeCallback={closeExpandedFileModal}>
           <button

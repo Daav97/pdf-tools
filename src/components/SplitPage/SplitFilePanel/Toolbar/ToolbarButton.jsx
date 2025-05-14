@@ -3,7 +3,7 @@ const ToolbarButton = ({ children, onClick, title = '' }) => {
     <button
       title={title}
       onClick={onClick}
-      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-neutral-200 text-neutral-700 hover:bg-neutral-600 hover:text-white active:bg-neutral-600 active:text-teal-300"
+      className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-500 hover:text-white active:bg-neutral-500 active:text-teal-300"
     >
       {children}
     </button>
