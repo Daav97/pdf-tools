@@ -29,6 +29,7 @@ const ModalMergedFile = ({
               title={mergedFileName}
               value={mergedFileName}
               onChange={handleMergedFileNameChange}
+              onFocus={(e) => e.target.select()}
               className="absolute top-0 left-0 w-full truncate rounded border border-neutral-300 bg-neutral-200 text-center font-semibold focus:outline-sky-300/50"
             />
           </div>
